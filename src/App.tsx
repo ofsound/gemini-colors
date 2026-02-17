@@ -77,7 +77,7 @@ function App() {
           </button>
         </div>
 
-        <h1 className="mb-9 [font-family:'Rubik'] text-6xl leading-[1.15] font-normal">
+        <h1 className="mb-9 font-heading text-6xl leading-[1.15] font-normal">
           Color Space Interpolation
         </h1>
       </header>
