@@ -24,7 +24,7 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  /* place-items: center; */
   justify-content: center;
   min-width: 320px;
   min-height: 100vh;
@@ -92,6 +92,7 @@ header p {
   justify-content: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 .control-group label {
@@ -145,10 +146,6 @@ input[type="range"] {
     margin-top: 2rem;
     padding: 1.25rem;
   }
-  input[type="color"] {
-    width: 40px;
-    height: 40px;
-  }
 }
 
 @media (min-width: 768px) {
@@ -161,11 +158,15 @@ input[type="range"] {
 }
 
 select {
-  padding: 0.5rem;
-  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
+  margin-top: 30px;
+  margin-left: 40px;
+  padding: 0.3rem;
+  font-size: 0.7rem;
+  border: 0;
+  font-weight: 900;
   border-radius: 4px;
-  border: 1px solid #555;
-  background-color: #222;
+  /* border: 1px solid #555; */
+  background-color: #000;
   color: inherit;
 }
 
@@ -174,26 +175,20 @@ select {
 }
 
 .mode-toggle button {
-  background-color: #222;
-  border: 1px solid #555;
-  padding: 0.5rem clamp(0.75rem, 2vw + 0.5rem, 1rem);
-  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
+  background-color: #3e3e4a;
+  border: 0;
+  padding: 0.5rem 0.9rem;
+  font-weight: 900;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.mode-toggle button:first-child {
-  border-radius: 6px 0 0 6px;
-  border-right: none;
-}
-
-.mode-toggle button:last-child {
-  border-radius: 0 6px 6px 0;
-  border-left: none;
+  border-radius: 8px;
 }
 
 .mode-toggle button.active {
-  background-color: #646cff;
+  background-color: #000;
   border-color: #646cff;
   color: white;
 }
@@ -233,7 +228,7 @@ select {
     border-radius: 12px;
   }
   .static-mode {
-    height: 180px;
+    min-height: 180px;
   }
 }
 
@@ -242,7 +237,7 @@ select {
     min-height: 200px;
   }
   .static-mode {
-    height: 200px;
+    min-height: 200px;
   }
 }
 
@@ -281,7 +276,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  /* padding: 1.25rem; */
 }
 
 .animated {
@@ -296,7 +291,7 @@ select {
 
 @media (min-width: 768px) {
   .animation-mode {
-    padding: 2rem;
+    /* padding: 2rem; */
   }
 }
 
