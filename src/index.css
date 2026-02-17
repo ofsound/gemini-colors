@@ -187,7 +187,7 @@ input[type="range"] {
   --display-height: 160px;
   display: flex;
   align-items: stretch;
-  gap: 0.9rem;
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
   height: var(--display-height);
 }
@@ -226,7 +226,7 @@ input[type="range"] {
   --side-column-width: 130px;
   display: flex;
   align-items: stretch;
-  gap: 0.9rem;
+  gap: 1.5rem;
 }
 
 .controls-with-color-space .controls {

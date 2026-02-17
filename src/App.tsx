@@ -4,12 +4,34 @@ import type {ColorSpace} from "./types/color";
 import {ChromeColorPicker} from "./components/ChromeColorPicker";
 
 const COLOR_SPACES: ColorSpace[] = ["srgb", "hsl", "hwb", "lch", "oklch", "lab", "oklab"];
+const STEPS_MIN = 1;
+const STEPS_MAX = 50;
+const STEPS_SLIDER_PRECISION = 1000;
+const STEPS_EXPONENT = 2.45;
+
+const clampNumber = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+const stepsFromSliderPosition = (position: number) => {
+  const clampedPosition = clampNumber(position, 0, STEPS_SLIDER_PRECISION);
+  const normalizedPosition = clampedPosition / STEPS_SLIDER_PRECISION;
+  const curved = Math.pow(normalizedPosition, STEPS_EXPONENT);
+  const mapped = STEPS_MIN + (STEPS_MAX - STEPS_MIN) * curved;
+  return Math.round(mapped);
+};
+
+const sliderPositionFromSteps = (steps: number) => {
+  const clampedSteps = clampNumber(steps, STEPS_MIN, STEPS_MAX);
+  const normalizedSteps = (clampedSteps - STEPS_MIN) / (STEPS_MAX - STEPS_MIN);
+  const inverseCurved = Math.pow(normalizedSteps, 1 / STEPS_EXPONENT);
+  return Math.round(inverseCurved * STEPS_SLIDER_PRECISION);
+};
 
 function App() {
   const [startColor, setStartColor] = useState("#0000ff");
   const [endColor, setEndColor] = useState("#ff0000");
   const [steps, setSteps] = useState(10);
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
+  const sliderPosition = sliderPositionFromSteps(steps);
 
   const handleColorSpaceKeyDown = (currentIndex: number) => (event: KeyboardEvent<HTMLInputElement>) => {
     const {key} = event;
@@ -53,7 +75,16 @@ function App() {
           <ColorDisplay startColor={startColor} endColor={endColor} steps={steps} colorSpace={colorSpace} mode="static" />
 
           <div className="vertical-steps-wrap" aria-label="Steps">
-            <input className="steps-slider-vertical" type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} aria-label="Steps" />
+            <input
+              className="steps-slider-vertical"
+              type="range"
+              min="0"
+              max={STEPS_SLIDER_PRECISION}
+              step="1"
+              value={sliderPosition}
+              onChange={(e) => setSteps(stepsFromSliderPosition(Number(e.target.value)))}
+              aria-label="Steps"
+            />
           </div>
         </div>
 

@@ -57,7 +57,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
   // Static Mode
   const blocks = [];
   for (let i = 0; i < steps; i++) {
-    const percentage = (i / (steps - 1)) * 100;
+    const percentage = steps === 1 ? 0 : (i / (steps - 1)) * 100;
     const style = {
       backgroundColor: `color-mix(in ${colorSpace}, ${startColor}, ${endColor} ${percentage}%)`,
     };
