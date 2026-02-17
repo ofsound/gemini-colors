@@ -3,7 +3,7 @@ import { ColorDisplay } from "./components/ColorDisplay";
 import { StepsSlider } from "./components/StepsSlider";
 import type { ColorSpace } from "./types/color";
 import { ChromeColorPicker } from "./components/ChromeColorPicker";
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/hooks/useTheme";
 
 const COLOR_SPACES: ColorSpace[] = [
   "srgb",
@@ -45,7 +45,8 @@ function App() {
     }
 
     if (key === "ArrowUp" || key === "ArrowLeft") {
-      nextIndex = (currentIndex - 1 + COLOR_SPACES.length) % COLOR_SPACES.length;
+      nextIndex =
+        (currentIndex - 1 + COLOR_SPACES.length) % COLOR_SPACES.length;
     }
 
     if (key === "Home") nextIndex = 0;
@@ -55,7 +56,10 @@ function App() {
     setColorSpace(nextValue);
 
     requestAnimationFrame(() => {
-      const radios = radioGroupRef.current?.querySelectorAll<HTMLDivElement>('[role="radio"]');
+      const radios =
+        radioGroupRef.current?.querySelectorAll<HTMLDivElement>(
+          '[role="radio"]',
+        );
       radios?.[nextIndex]?.focus();
     });
   };
@@ -77,7 +81,7 @@ function App() {
           </button>
         </div>
 
-        <h1 className="mb-9 font-heading text-6xl leading-[1.15] font-normal">
+        <h1 className="font-heading mb-9 text-6xl leading-[1.15] font-normal">
           Color Space Interpolation
         </h1>
       </header>
