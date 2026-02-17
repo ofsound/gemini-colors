@@ -1,4 +1,5 @@
 import React from "react";
+import {ChromeColorPicker} from "./ChromeColorPicker";
 
 export type ColorSpace = "srgb" | "hsl" | "hwb" | "lch" | "oklch" | "lab" | "oklab";
 export type DisplayMode = "static" | "animation";
@@ -12,29 +13,22 @@ interface ControlsProps {
   setSteps: (s: number) => void;
   colorSpace: ColorSpace;
   setColorSpace: (s: ColorSpace) => void;
-  mode: DisplayMode;
-  setMode: (m: DisplayMode) => void;
 }
 
 const COLOR_SPACES: ColorSpace[] = ["srgb", "hsl", "hwb", "lch", "oklch", "lab", "oklab"];
 
-export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, endColor, setEndColor, steps, setSteps, colorSpace, setColorSpace, mode, setMode}) => {
+export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, endColor, setEndColor, steps, setSteps, colorSpace, setColorSpace}) => {
   return (
     <div className="controls">
-      <div className="control-group mode-toggle">
-        <button className={mode === "static" ? "active" : ""} onClick={() => setMode("static")}>
-          Static
-        </button>
-        <button className={mode === "animation" ? "active" : ""} onClick={() => setMode("animation")}>
-          Animation
-        </button>
+      <div className="control-group steps-group">
+        <label className="steps-label">
+          {steps}
+          <input className="steps-slider" type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} />
+        </label>
       </div>
 
       <div className="control-group">
-        <label>
-          <input type="color" value={startColor} onChange={(e) => setStartColor(e.target.value)} />
-          {/* <span className="color-value">{startColor}</span> */}
-        </label>
+        <ChromeColorPicker value={startColor} onChange={setStartColor} label="Start" />
 
         <button
           className="swap-btn"
@@ -43,32 +37,26 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
             setStartColor(endColor);
             setEndColor(temp);
           }}
-          title="Swap Colors">
-          ⇄
+          title="Swap Colors"
+          aria-label="Swap colors">
+          <svg className="swap-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7 7h11l-2.8-2.8a1 1 0 0 1 1.4-1.4l4.5 4.5a1 1 0 0 1 0 1.4l-4.5 4.5a1 1 0 0 1-1.4-1.4L18 9H7a1 1 0 1 1 0-2Zm10 10H6l2.8 2.8a1 1 0 0 1-1.4 1.4l-4.5-4.5a1 1 0 0 1 0-1.4l4.5-4.5a1 1 0 0 1 1.4 1.4L6 15h11a1 1 0 1 1 0 2Z" />
+          </svg>
         </button>
 
-        <label>
-          <input type="color" value={endColor} onChange={(e) => setEndColor(e.target.value)} />
-          {/* <span className="color-value">{endColor}</span> */}
-        </label>
+        <ChromeColorPicker value={endColor} onChange={setEndColor} label="End" />
       </div>
       <div className="control-group">
-        <div className="control-group color-space-slider">
-          <input id="color-space-slider" type="range" min={0} max={COLOR_SPACES.length - 1} step={1} value={COLOR_SPACES.indexOf(colorSpace)} onChange={(e) => setColorSpace(COLOR_SPACES[Number(e.target.value)])} aria-label="Color space" />
-          <output className="color-space-label" htmlFor="color-space-slider">
-            {colorSpace.toUpperCase()}
-          </output>
-        </div>
+        <fieldset className="color-space-group" aria-label="Color space">
+          {COLOR_SPACES.map((space) => (
+            <label key={space} className="color-space-option">
+              <input type="radio" name="color-space" value={space} checked={colorSpace === space} onChange={() => setColorSpace(space)} />
+              <span>{space.toUpperCase()}</span>
+            </label>
+          ))}
+        </fieldset>
+        <p className="color-space-hint">Use ↑/↓ or ←/→ to move between options.</p>
       </div>
-
-      {mode === "static" && (
-        <div className="control-group">
-          <label>
-            Steps&nbsp;({steps})
-            <input type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} />
-          </label>
-        </div>
-      )}
     </div>
   );
 };
