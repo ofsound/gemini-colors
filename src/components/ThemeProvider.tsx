@@ -48,10 +48,7 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     setThemeState((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
-  const value = useMemo(
-    () => ({ theme, toggleTheme }),
-    [theme],
-  );
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme]);
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

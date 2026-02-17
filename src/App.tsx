@@ -163,7 +163,7 @@ function App() {
                       aria-hidden
                     >
                       {isSelected ? (
-                        <span className="size-2 rounded-full bg-foreground" />
+                        <span className="bg-foreground size-2 rounded-full" />
                       ) : null}
                     </span>
                     <span

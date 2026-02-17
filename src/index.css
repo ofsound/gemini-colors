@@ -20,7 +20,7 @@
   --semantic-border: light-dark(theme(colors.zinc.400), theme(colors.zinc.800));
   --semantic-border-strong: light-dark(
     theme(colors.zinc.300),
-    theme(colors.zinc.600)
+    /* theme(colors.zinc.600) */ theme(colors.green.500)
   );
   --semantic-surface: light-dark(theme(colors.white), theme(colors.zinc.900));
   --semantic-surface-hover: light-dark(
