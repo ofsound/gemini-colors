@@ -4,6 +4,7 @@ interface ChromeColorPickerProps {
   value: string;
   onChange: (color: string) => void;
   label: string;
+  reverseTopRow?: boolean;
 }
 
 interface RGB {
@@ -111,15 +112,42 @@ const normalizeHex = (input: string): string | null => {
   return `#${full.toUpperCase()}`;
 };
 
-export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onChange, label}) => {
+const rgbToDisplayString = ({r, g, b}: RGB) => `${r}, ${g}, ${b}`;
+
+const normalizeRgbInput = (input: string): RGB | null => {
+  const trimmed = input.trim();
+  if (!trimmed) return null;
+
+  const match = trimmed.match(/^rgb\s*\((.*)\)$/i);
+  const content = match ? match[1] : trimmed;
+  const parts = content.split(/[\s,]+/).filter(Boolean);
+
+  if (parts.length !== 3) return null;
+
+  const channels = parts.map((part) => Number(part));
+  if (channels.some((channel) => !Number.isFinite(channel))) return null;
+  if (channels.some((channel) => channel < 0 || channel > 255)) return null;
+
+  return {
+    r: Math.round(channels[0]),
+    g: Math.round(channels[1]),
+    b: Math.round(channels[2]),
+  };
+};
+
+export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onChange, label, reverseTopRow = false}) => {
   const hsv = useMemo(() => rgbToHsv(hexToRgb(value)), [value]);
   const [dragMode, setDragMode] = useState<"xy" | null>(null);
   const [hexInput, setHexInput] = useState(value.toUpperCase());
   const [hexInvalid, setHexInvalid] = useState(false);
+  const [rgbInput, setRgbInput] = useState(rgbToDisplayString(hexToRgb(value)));
+  const [rgbInvalid, setRgbInvalid] = useState(false);
 
   useEffect(() => {
     setHexInput(value.toUpperCase());
+    setRgbInput(rgbToDisplayString(hexToRgb(value)));
     setHexInvalid(false);
+    setRgbInvalid(false);
   }, [value]);
 
   useEffect(() => {
@@ -156,10 +184,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
   }, [dragMode, hsv.h, hsv.s, hsv.v, label, onChange]);
 
   const saturationPointerX = `${(hsv.h / 360) * 100}%`;
-  const saturationPointerY =
-    hsv.v >= 99.5
-      ? `${50 + ((100 - hsv.s) / 100) * 50}%`
-      : `${(hsv.v / 100) * 50}%`;
+  const saturationPointerY = hsv.v >= 99.5 ? `${50 + ((100 - hsv.s) / 100) * 50}%` : `${(hsv.v / 100) * 50}%`;
 
   const onXYPointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
     const panel = event.currentTarget;
@@ -189,11 +214,41 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
     onChange(normalized.toLowerCase());
   };
 
+  const commitRgbInput = () => {
+    const normalized = normalizeRgbInput(rgbInput);
+    if (!normalized) {
+      setRgbInvalid(true);
+      return;
+    }
+
+    setRgbInvalid(false);
+    setRgbInput(rgbToDisplayString(normalized));
+    onChange(rgbToHex(normalized));
+  };
+
   return (
     <div className="chrome-picker" aria-label={`${label} color picker`}>
-      <div className="chrome-picker-footer">
+      <div className={`chrome-picker-footer${reverseTopRow ? " reversed" : ""}`}>
         <div className="chrome-swatch" style={{backgroundColor: value}} />
         <div className="chrome-hex-editor">
+          <input
+            className={`chrome-rgb-input${rgbInvalid ? " invalid" : ""}`}
+            type="text"
+            value={rgbInput}
+            aria-label={`${label} rgb color`}
+            spellCheck={false}
+            onChange={(event) => {
+              setRgbInput(event.target.value);
+              if (rgbInvalid) setRgbInvalid(false);
+            }}
+            onBlur={commitRgbInput}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                commitRgbInput();
+              }
+            }}
+          />
           <input
             className={`chrome-hex-input${hexInvalid ? " invalid" : ""}`}
             type="text"

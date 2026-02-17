@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import type {ColorSpace, DisplayMode} from "./Controls";
+import type {ColorSpace, DisplayMode} from "../types/color";
 
 interface ColorDisplayProps {
   startColor: string;
