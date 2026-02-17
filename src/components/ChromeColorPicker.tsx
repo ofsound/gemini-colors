@@ -152,13 +152,15 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
   const [hexInvalid, setHexInvalid] = useState(false);
   const [rgbInput, setRgbInput] = useState(rgbToDisplayString(hexToRgb(value)));
   const [rgbInvalid, setRgbInvalid] = useState(false);
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     setHexInput(value.toUpperCase());
     setRgbInput(rgbToDisplayString(hexToRgb(value)));
     setHexInvalid(false);
     setRgbInvalid(false);
-  }, [value]);
+  }
 
   useEffect(() => {
     if (!dragMode) return;
@@ -191,7 +193,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [dragMode, hsv.h, hsv.s, hsv.v, label, onChange]);
+  }, [dragMode, label, onChange]);
 
   const saturationPointerX = `${(hsv.h / 360) * 100}%`;
   const saturationPointerY =
@@ -255,7 +257,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
         />
         <div className="flex w-[92px] max-w-[92px] min-w-0 shrink-0 flex-col items-stretch gap-2">
           <input
-            className={`border-border bg-background/50 text-foreground font-mono placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
+            className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-mono text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
             type="text"
             value={hexInput}
             aria-label={`${label} hex color`}
@@ -273,7 +275,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
             }}
           />
           <input
-            className={`border-border bg-background/50 text-foreground font-mono placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
+            className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-mono text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
             type="text"
             value={rgbInput}
             aria-label={`${label} rgb color`}
