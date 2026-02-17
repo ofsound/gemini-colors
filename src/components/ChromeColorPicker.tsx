@@ -93,37 +93,55 @@ const hsvToRgb = ({h, s, v}: HSV): RGB => {
 
 const hsvToHex = (hsv: HSV) => rgbToHex(hsvToRgb(hsv));
 
+const normalizeHex = (input: string): string | null => {
+  const trimmed = input.trim();
+  const withoutHash = trimmed.startsWith("#") ? trimmed.slice(1) : trimmed;
+  const isShort = /^[0-9a-fA-F]{3}$/.test(withoutHash);
+  const isLong = /^[0-9a-fA-F]{6}$/.test(withoutHash);
+
+  if (!isShort && !isLong) return null;
+
+  const full = isShort
+    ? withoutHash
+        .split("")
+        .map((char) => char + char)
+        .join("")
+    : withoutHash;
+
+  return `#${full.toUpperCase()}`;
+};
+
 export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onChange, label}) => {
   const hsv = useMemo(() => rgbToHsv(hexToRgb(value)), [value]);
-  const [dragMode, setDragMode] = useState<"sv" | "h" | null>(null);
+  const [dragMode, setDragMode] = useState<"xy" | null>(null);
+  const [hexInput, setHexInput] = useState(value.toUpperCase());
+  const [hexInvalid, setHexInvalid] = useState(false);
+
+  useEffect(() => {
+    setHexInput(value.toUpperCase());
+    setHexInvalid(false);
+  }, [value]);
 
   useEffect(() => {
     if (!dragMode) return;
 
     const handlePointerMove = (event: PointerEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (!target) return;
+      if (dragMode !== "xy") return;
 
-      if (dragMode === "sv") {
-        const panel = document.getElementById(`${label}-sv-panel`);
-        if (!panel) return;
-        const rect = panel.getBoundingClientRect();
-        const x = clamp(event.clientX - rect.left, 0, rect.width);
-        const y = clamp(event.clientY - rect.top, 0, rect.height);
+      const panel = document.getElementById(`${label}-xy-panel`);
+      if (!panel) return;
+      const rect = panel.getBoundingClientRect();
+      const x = clamp(event.clientX - rect.left, 0, rect.width);
+      const y = clamp(event.clientY - rect.top, 0, rect.height);
 
-        const nextS = (x / rect.width) * 100;
-        const nextV = 100 - (y / rect.height) * 100;
-        onChange(hsvToHex({h: hsv.h, s: nextS, v: nextV}));
-      }
+      const nextH = (x / rect.width) * 360;
+      const yRatio = y / rect.height;
+      const inTopHalf = yRatio <= 0.5;
 
-      if (dragMode === "h") {
-        const slider = document.getElementById(`${label}-hue-slider`);
-        if (!slider) return;
-        const rect = slider.getBoundingClientRect();
-        const x = clamp(event.clientX - rect.left, 0, rect.width);
-        const nextH = (x / rect.width) * 360;
-        onChange(hsvToHex({h: nextH, s: hsv.s, v: hsv.v}));
-      }
+      const nextS = inTopHalf ? 100 : 100 - ((yRatio - 0.5) / 0.5) * 100;
+      const nextV = inTopHalf ? (yRatio / 0.5) * 100 : 100;
+
+      onChange(hsvToHex({h: nextH, s: nextS, v: nextV}));
     };
 
     const handlePointerUp = () => setDragMode(null);
@@ -137,37 +155,68 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
     };
   }, [dragMode, hsv.h, hsv.s, hsv.v, label, onChange]);
 
-  const saturationPointerX = `${hsv.s}%`;
-  const saturationPointerY = `${100 - hsv.v}%`;
-  const huePointerX = `${(hsv.h / 360) * 100}%`;
+  const saturationPointerX = `${(hsv.h / 360) * 100}%`;
+  const saturationPointerY =
+    hsv.v >= 99.5
+      ? `${50 + ((100 - hsv.s) / 100) * 50}%`
+      : `${(hsv.v / 100) * 50}%`;
 
-  const onSatValPointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
+  const onXYPointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
     const panel = event.currentTarget;
     const rect = panel.getBoundingClientRect();
     const x = clamp(event.clientX - rect.left, 0, rect.width);
     const y = clamp(event.clientY - rect.top, 0, rect.height);
-    const nextS = (x / rect.width) * 100;
-    const nextV = 100 - (y / rect.height) * 100;
+    const nextH = (x / rect.width) * 360;
+    const yRatio = y / rect.height;
+    const inTopHalf = yRatio <= 0.5;
 
-    onChange(hsvToHex({h: hsv.h, s: nextS, v: nextV}));
-    setDragMode("sv");
+    const nextS = inTopHalf ? 100 : 100 - ((yRatio - 0.5) / 0.5) * 100;
+    const nextV = inTopHalf ? (yRatio / 0.5) * 100 : 100;
+
+    onChange(hsvToHex({h: nextH, s: nextS, v: nextV}));
+    setDragMode("xy");
   };
 
-  const onHuePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
-    const slider = event.currentTarget;
-    const rect = slider.getBoundingClientRect();
-    const x = clamp(event.clientX - rect.left, 0, rect.width);
-    const nextH = (x / rect.width) * 360;
+  const commitHexInput = () => {
+    const normalized = normalizeHex(hexInput);
+    if (!normalized) {
+      setHexInvalid(true);
+      return;
+    }
 
-    onChange(hsvToHex({h: nextH, s: hsv.s, v: hsv.v}));
-    setDragMode("h");
+    setHexInvalid(false);
+    setHexInput(normalized);
+    onChange(normalized.toLowerCase());
   };
 
   return (
     <div className="chrome-picker" aria-label={`${label} color picker`}>
-      <div id={`${label}-sv-panel`} className="chrome-sv-panel" style={{backgroundColor: `hsl(${hsv.h}, 100%, 50%)`}} onPointerDown={onSatValPointerDown} role="slider" aria-label={`${label} saturation and brightness`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(hsv.s)}>
-        <div className="chrome-sv-white" />
-        <div className="chrome-sv-black" />
+      <div className="chrome-picker-footer">
+        <div className="chrome-swatch" style={{backgroundColor: value}} />
+        <div className="chrome-hex-editor">
+          <input
+            className={`chrome-hex-input${hexInvalid ? " invalid" : ""}`}
+            type="text"
+            value={hexInput}
+            aria-label={`${label} hex color`}
+            spellCheck={false}
+            onChange={(event) => {
+              setHexInput(event.target.value.toUpperCase());
+              if (hexInvalid) setHexInvalid(false);
+            }}
+            onBlur={commitHexInput}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                commitHexInput();
+              }
+            }}
+          />
+          <span className="chrome-hex-hint">Hex</span>
+        </div>
+      </div>
+
+      <div id={`${label}-xy-panel`} className="chrome-sv-panel" onPointerDown={onXYPointerDown} role="slider" aria-label={`${label} hue and brightness`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(hsv.v)}>
         <div
           className="chrome-sv-pointer"
           style={{
@@ -175,15 +224,6 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
             top: saturationPointerY,
           }}
         />
-      </div>
-
-      <div id={`${label}-hue-slider`} className="chrome-hue-slider" onPointerDown={onHuePointerDown} role="slider" aria-label={`${label} hue`} aria-valuemin={0} aria-valuemax={360} aria-valuenow={Math.round(hsv.h)}>
-        <div className="chrome-hue-pointer" style={{left: huePointerX}} />
-      </div>
-
-      <div className="chrome-picker-footer">
-        <div className="chrome-swatch" style={{backgroundColor: value}} />
-        <span className="chrome-hex-value">{value.toUpperCase()}</span>
       </div>
     </div>
   );

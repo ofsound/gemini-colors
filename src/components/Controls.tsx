@@ -22,12 +22,11 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
     <div className="controls">
       <div className="control-group steps-group">
         <label className="steps-label">
-          {steps}
-          <input className="steps-slider" type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} />
+          <input className="steps-slider" type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} aria-label="Steps" />
         </label>
       </div>
 
-      <div className="control-group">
+      <div className="control-group colors-group">
         <ChromeColorPicker value={startColor} onChange={setStartColor} label="Start" />
 
         <button
@@ -46,7 +45,7 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
 
         <ChromeColorPicker value={endColor} onChange={setEndColor} label="End" />
       </div>
-      <div className="control-group">
+      <div className="control-group color-space-control">
         <fieldset className="color-space-group" aria-label="Color space">
           {COLOR_SPACES.map((space) => (
             <label key={space} className="color-space-option">

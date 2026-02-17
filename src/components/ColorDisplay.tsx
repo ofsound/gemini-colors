@@ -61,11 +61,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
     const style = {
       backgroundColor: `color-mix(in ${colorSpace}, ${startColor}, ${endColor} ${percentage}%)`,
     };
-    blocks.push(
-      <div key={i} className="color-box" style={style}>
-        <span className="tooltip">{Math.round(percentage)}%</span>
-      </div>,
-    );
+    blocks.push(<div key={i} className="color-box" style={style}></div>);
   }
 
   return <div className="display-container static-mode">{blocks}</div>;
