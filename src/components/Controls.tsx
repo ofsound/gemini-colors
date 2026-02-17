@@ -22,11 +22,11 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
   return (
     <div className="controls">
       <div className="control-group mode-toggle">
-        <button className={mode === "animation" ? "active" : ""} onClick={() => setMode("animation")}>
-          Animation
-        </button>
         <button className={mode === "static" ? "active" : ""} onClick={() => setMode("static")}>
           Static
+        </button>
+        <button className={mode === "animation" ? "active" : ""} onClick={() => setMode("animation")}>
+          Animation
         </button>
       </div>
 
@@ -51,17 +51,13 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
           <input type="color" value={endColor} onChange={(e) => setEndColor(e.target.value)} />
           {/* <span className="color-value">{endColor}</span> */}
         </label>
-
-        <div className="control-group">
-          <label>
-            <select value={colorSpace} onChange={(e) => setColorSpace(e.target.value as ColorSpace)}>
-              {COLOR_SPACES.map((space) => (
-                <option key={space} value={space}>
-                  {space.toUpperCase()}
-                </option>
-              ))}
-            </select>
-          </label>
+      </div>
+      <div className="control-group">
+        <div className="control-group color-space-slider">
+          <input id="color-space-slider" type="range" min={0} max={COLOR_SPACES.length - 1} step={1} value={COLOR_SPACES.indexOf(colorSpace)} onChange={(e) => setColorSpace(COLOR_SPACES[Number(e.target.value)])} aria-label="Color space" />
+          <output className="color-space-label" htmlFor="color-space-slider">
+            {colorSpace.toUpperCase()}
+          </output>
         </div>
       </div>
 

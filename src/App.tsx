@@ -7,7 +7,7 @@ function App() {
   const [endColor, setEndColor] = useState("#ff0000");
   const [steps, setSteps] = useState(10);
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
-  const [mode, setMode] = useState<DisplayMode>("animation");
+  const [mode, setMode] = useState<DisplayMode>("static");
 
   return (
     <div className="app-container">
