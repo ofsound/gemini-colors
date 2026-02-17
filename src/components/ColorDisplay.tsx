@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import type { ColorSpace, DisplayMode } from "../types/color";
+import React from "react";
+import type { ColorSpace } from "../types/color";
 
 interface ColorDisplayProps {
   startColor: string;
   endColor: string;
   steps: number;
   colorSpace: ColorSpace;
-  mode: DisplayMode;
 }
 
 export const ColorDisplay: React.FC<ColorDisplayProps> = ({
@@ -14,58 +13,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({
   endColor,
   steps,
   colorSpace,
-  mode,
 }) => {
-  const [animationProgress, setAnimationProgress] = useState(0);
-  const requestRef = useRef<number | undefined>(undefined);
-  const startTimeRef = useRef<number | undefined>(undefined);
-
-  const animate = (time: number) => {
-    if (startTimeRef.current === undefined) startTimeRef.current = time;
-    // const duration = 2000; // 2 seconds per cycle
-    const elapsed = time - startTimeRef.current;
-
-    // Ping pong logic
-    const cycle = 2000;
-    const totalTime = elapsed % (cycle * 2);
-    let progress = totalTime / cycle;
-    if (progress > 1) progress = 2 - progress;
-
-    setAnimationProgress(progress);
-    requestRef.current = requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    if (mode === "animation") {
-      startTimeRef.current = undefined;
-      requestRef.current = requestAnimationFrame(animate);
-    } else {
-      if (requestRef.current !== undefined)
-        cancelAnimationFrame(requestRef.current);
-    }
-    return () => {
-      if (requestRef.current !== undefined)
-        cancelAnimationFrame(requestRef.current);
-    };
-  }, [mode]);
-
-  if (mode === "animation") {
-    const percentage = animationProgress * 100;
-    const style = {
-      backgroundColor: `color-mix(in ${colorSpace}, ${startColor}, ${endColor} ${percentage}%)`,
-    };
-
-    return (
-      <div className="bg-surface mb-6 flex h-full min-h-[160px] items-center justify-center overflow-hidden rounded-[10px] [background-image:linear-gradient(45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(-45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%),linear-gradient(-45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.16)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
-        <div
-          className="flex size-[clamp(100px,25vw,150px)] items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.3)]"
-          style={style}
-        ></div>
-      </div>
-    );
-  }
-
-  // Static Mode
   const blocks = [];
   for (let i = 0; i < steps; i++) {
     const percentage = steps === 1 ? 0 : (i / (steps - 1)) * 100;
@@ -82,7 +30,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({
   }
 
   return (
-    <div className="bg-surface mb-6 flex h-full min-h-[160px] flex-1 overflow-hidden rounded-[10px] [background-image:linear-gradient(45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(-45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%),linear-gradient(-45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.16)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
+    <div className="bg-surface mb-6 flex h-full min-h-[160px] flex-1 overflow-hidden rounded-[10px]">
       {blocks}
     </div>
   );

@@ -295,7 +295,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
 
       <div
         id={`${label}-xy-panel`}
-        className="relative h-[clamp(80px,18.5vw,120px)] cursor-crosshair touch-none overflow-hidden rounded-md"
+        className="border-border relative h-[clamp(80px,18.5vw,120px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
         style={{ background: SV_PANEL_BACKGROUND }}
         onPointerDown={onXYPointerDown}
         role="slider"

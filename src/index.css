@@ -81,7 +81,7 @@
       theme(colors.zinc.300)
     );
     --semantic-border: light-dark(
-      theme(colors.zinc.200),
+      theme(colors.zinc.400),
       theme(colors.zinc.800)
     );
     --semantic-border-strong: light-dark(

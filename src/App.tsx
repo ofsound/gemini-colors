@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { ColorDisplay } from "./components/ColorDisplay";
 import { StepsSlider } from "./components/StepsSlider";
 import type { ColorSpace } from "./types/color";
@@ -22,47 +22,46 @@ function App() {
   const [steps, setSteps] = useState(10);
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
 
-  const handleColorSpaceKeyDown =
-    (currentIndex: number) => (event: KeyboardEvent<HTMLInputElement>) => {
-      const { key } = event;
-      const isArrowKey =
-        key === "ArrowDown" ||
-        key === "ArrowUp" ||
-        key === "ArrowRight" ||
-        key === "ArrowLeft";
-      const isHomeEnd = key === "Home" || key === "End";
+  const radioGroupRef = useRef<HTMLDivElement>(null);
 
-      if (!isArrowKey && !isHomeEnd) return;
+  const handleColorSpaceKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const { key } = event;
+    const isArrowKey =
+      key === "ArrowDown" ||
+      key === "ArrowUp" ||
+      key === "ArrowRight" ||
+      key === "ArrowLeft";
+    const isHomeEnd = key === "Home" || key === "End";
 
-      event.preventDefault();
+    if (!isArrowKey && !isHomeEnd) return;
 
-      let nextIndex = currentIndex;
+    event.preventDefault();
 
-      if (key === "ArrowDown" || key === "ArrowRight") {
-        nextIndex = (currentIndex + 1) % COLOR_SPACES.length;
-      }
+    const currentIndex = COLOR_SPACES.indexOf(colorSpace);
+    let nextIndex = currentIndex;
 
-      if (key === "ArrowUp" || key === "ArrowLeft") {
-        nextIndex =
-          (currentIndex - 1 + COLOR_SPACES.length) % COLOR_SPACES.length;
-      }
+    if (key === "ArrowDown" || key === "ArrowRight") {
+      nextIndex = (currentIndex + 1) % COLOR_SPACES.length;
+    }
 
-      if (key === "Home") nextIndex = 0;
-      if (key === "End") nextIndex = COLOR_SPACES.length - 1;
+    if (key === "ArrowUp" || key === "ArrowLeft") {
+      nextIndex = (currentIndex - 1 + COLOR_SPACES.length) % COLOR_SPACES.length;
+    }
 
-      const nextValue = COLOR_SPACES[nextIndex];
-      setColorSpace(nextValue);
+    if (key === "Home") nextIndex = 0;
+    if (key === "End") nextIndex = COLOR_SPACES.length - 1;
 
-      requestAnimationFrame(() => {
-        const nextRadio = document.querySelector<HTMLInputElement>(
-          `input[name="color-space"][value="${nextValue}"]`,
-        );
-        nextRadio?.focus();
-      });
-    };
+    const nextValue = COLOR_SPACES[nextIndex];
+    setColorSpace(nextValue);
+
+    requestAnimationFrame(() => {
+      const radios = radioGroupRef.current?.querySelectorAll<HTMLDivElement>('[role="radio"]');
+      radios?.[nextIndex]?.focus();
+    });
+  };
 
   return (
-    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-[1280px] p-4 text-center font-sans text-sm antialiased sm:p-5 md:p-6 lg:p-8">
+    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-[1280px] p-4 text-center font-sans text-sm antialiased">
       <header>
         <div className="mb-4 flex items-center justify-end">
           <button
@@ -84,13 +83,12 @@ function App() {
       </header>
 
       <main>
-        <div className="mb-6 flex h-[160px] items-stretch gap-6 sm:h-[180px] md:h-[200px]">
+        <div className="mb-6 flex h-[160px] items-stretch gap-6">
           <ColorDisplay
             startColor={startColor}
             endColor={endColor}
             steps={steps}
             colorSpace={colorSpace}
-            mode="static"
           />
 
           <div
@@ -102,7 +100,7 @@ function App() {
         </div>
 
         <div className="flex items-stretch gap-6">
-          <div className="border-border bg-surface mt-0 flex min-w-0 flex-1 flex-col gap-12 rounded-xl border px-4 pt-8 pb-2 shadow-[0_4px_12px_rgba(0,0,0,0.12)]">
+          <div className="border-border bg-surface mt-0 flex min-w-0 flex-1 flex-col gap-12 rounded-xl border px-4 pt-8 pb-2">
             <div className="mb-[30px] flex flex-nowrap items-start justify-start gap-4">
               <ChromeColorPicker
                 value={startColor}
@@ -140,32 +138,52 @@ function App() {
           </div>
 
           <div className="border-border bg-surface flex min-h-[215px] w-[130px] flex-none self-stretch rounded-[10px] border px-2 py-2 pt-10">
-            <fieldset
-              className="m-0 flex w-full flex-col gap-1 border-0 p-0"
+            <div
+              ref={radioGroupRef}
+              role="radiogroup"
               aria-label="Color space"
+              className="flex w-full flex-col gap-1"
+              onKeyDown={handleColorSpaceKeyDown}
             >
-              {COLOR_SPACES.map((space) => (
-                <label
-                  key={space}
-                  className="flex w-full items-center justify-start gap-2 px-1 py-0.5 text-sm font-bold tracking-[0.05em] uppercase"
-                >
-                  <input
-                    className="peer accent-foreground focus-visible:outline-focus/60 m-0 scale-100 focus-visible:outline-2 focus-visible:outline-offset-2"
-                    type="radio"
-                    name="color-space"
-                    value={space}
-                    checked={colorSpace === space}
-                    onChange={() => setColorSpace(space)}
-                    onKeyDown={handleColorSpaceKeyDown(
-                      COLOR_SPACES.indexOf(space),
-                    )}
-                  />
-                  <span className="bg-neutral-bg text-neutral-fg peer-checked:bg-border peer-checked:text-foreground inline-flex w-max max-w-full items-center justify-center rounded-full px-[0.4em] py-[0.1em]">
-                    {space.toUpperCase()}
-                  </span>
-                </label>
-              ))}
-            </fieldset>
+              {COLOR_SPACES.map((space, index) => {
+                const isSelected = colorSpace === space;
+                return (
+                  <div
+                    key={space}
+                    role="radio"
+                    aria-checked={isSelected}
+                    tabIndex={isSelected ? 0 : -1}
+                    onClick={() => setColorSpace(space)}
+                    onKeyDown={(e) => {
+                      if (e.key === " " || e.key === "Enter") {
+                        e.preventDefault();
+                        setColorSpace(space);
+                      }
+                    }}
+                    data-index={index}
+                    className="focus-visible:outline-focus/60 flex w-full cursor-pointer items-center justify-start gap-2 px-1 py-0.5 text-sm font-bold tracking-[0.05em] uppercase outline-none focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    <input
+                      type="radio"
+                      aria-hidden="true"
+                      tabIndex={-1}
+                      readOnly
+                      checked={isSelected}
+                      className="accent-foreground pointer-events-none m-0 scale-100"
+                    />
+                    <span
+                      className={`inline-flex w-max max-w-full items-center justify-center rounded-full px-[0.4em] py-[0.1em] ${
+                        isSelected
+                          ? "bg-border text-foreground"
+                          : "bg-neutral-bg text-neutral-fg"
+                      }`}
+                    >
+                      {space.toUpperCase()}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </main>
