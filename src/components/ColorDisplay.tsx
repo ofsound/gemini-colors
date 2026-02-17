@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import type {ColorSpace, DisplayMode} from "../types/color";
+import React, { useEffect, useRef, useState } from "react";
+import type { ColorSpace, DisplayMode } from "../types/color";
 
 interface ColorDisplayProps {
   startColor: string;
@@ -9,7 +9,13 @@ interface ColorDisplayProps {
   mode: DisplayMode;
 }
 
-export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor, steps, colorSpace, mode}) => {
+export const ColorDisplay: React.FC<ColorDisplayProps> = ({
+  startColor,
+  endColor,
+  steps,
+  colorSpace,
+  mode,
+}) => {
   const [animationProgress, setAnimationProgress] = useState(0);
   const requestRef = useRef<number | undefined>(undefined);
   const startTimeRef = useRef<number | undefined>(undefined);
@@ -34,10 +40,12 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
       startTimeRef.current = undefined;
       requestRef.current = requestAnimationFrame(animate);
     } else {
-      if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
+      if (requestRef.current !== undefined)
+        cancelAnimationFrame(requestRef.current);
     }
     return () => {
-      if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
+      if (requestRef.current !== undefined)
+        cancelAnimationFrame(requestRef.current);
     };
   }, [mode]);
 
@@ -48,8 +56,11 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
     };
 
     return (
-      <div className="display-container animation-mode">
-        <div className="color-box animated" style={style}></div>
+      <div className="mb-6 flex h-full min-h-[160px] items-center justify-center overflow-hidden rounded-[10px] bg-[#1a1a1a] [background-image:linear-gradient(45deg,#222_25%,transparent_25%),linear-gradient(-45deg,#222_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#222_75%),linear-gradient(-45deg,transparent_75%,#222_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.3)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
+        <div
+          className="flex size-[clamp(100px,25vw,150px)] items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.3)]"
+          style={style}
+        ></div>
       </div>
     );
   }
@@ -61,8 +72,18 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
     const style = {
       backgroundColor: `color-mix(in ${colorSpace}, ${startColor}, ${endColor} ${percentage}%)`,
     };
-    blocks.push(<div key={i} className="color-box" style={style}></div>);
+    blocks.push(
+      <div
+        key={i}
+        className="relative h-full flex-1 transition-[flex] duration-200 ease-in-out hover:z-1 hover:flex-[1.5] hover:shadow-[0_0_10px_rgba(0,0,0,0.5)] [@media(hover:none),(pointer:coarse)]:hover:flex-1 [@media(hover:none),(pointer:coarse)]:hover:shadow-none"
+        style={style}
+      ></div>,
+    );
   }
 
-  return <div className="display-container static-mode">{blocks}</div>;
+  return (
+    <div className="mb-6 flex h-full min-h-[160px] overflow-hidden rounded-[10px] bg-[#1a1a1a] [background-image:linear-gradient(45deg,#222_25%,transparent_25%),linear-gradient(-45deg,#222_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#222_75%),linear-gradient(-45deg,transparent_75%,#222_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.3)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
+      {blocks}
+    </div>
+  );
 };
