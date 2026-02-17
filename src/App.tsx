@@ -20,7 +20,6 @@ function App() {
 
       <main>
         <ColorDisplay startColor={startColor} endColor={endColor} steps={steps} colorSpace={colorSpace} mode={mode} />
-
         <Controls startColor={startColor} setStartColor={setStartColor} endColor={endColor} setEndColor={setEndColor} steps={steps} setSteps={setSteps} colorSpace={colorSpace} setColorSpace={setColorSpace} mode={mode} setMode={setMode} />
       </main>
     </div>

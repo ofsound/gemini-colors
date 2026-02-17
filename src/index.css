@@ -1,3 +1,4 @@
+/* ========== Base (mobile-first) ========== */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,42 +12,69 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Fluid base font: ~16px on small, scales to ~18px on wide */
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
 }
 
 body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 .app-container {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
-  width: 100%;
+  box-sizing: border-box;
 }
 
 header h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: clamp(1.75rem, 5vw + 1rem, 3.2rem);
+  line-height: 1.15;
   margin-bottom: 0.5rem;
 }
 
 header p {
+  font-size: clamp(0.875rem, 2vw + 0.5rem, 1rem);
   color: #888;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Controls */
+@media (min-width: 480px) {
+  .app-container {
+    padding: 1.25rem;
+  }
+  header p {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    padding: 2rem;
+  }
+}
+
+/* Controls — mobile-first */
 .controls {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 2rem;
-  padding: 1.5rem;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
   border-radius: 12px;
   background-color: #333;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -56,7 +84,7 @@ header p {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -65,20 +93,22 @@ header p {
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
+  font-size: clamp(0.875rem, 1.5vw + 0.5rem, 1rem);
 }
 
 input[type="color"] {
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
   background: none;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .color-value {
   font-family: monospace;
-  font-size: 0.9em;
+  font-size: clamp(0.75rem, 1.5vw + 0.4rem, 0.9em);
   color: #aaa;
 }
 
@@ -86,8 +116,8 @@ input[type="color"] {
   background: none;
   border: 1px solid #555;
   color: inherit;
-  font-size: 1.2rem;
-  padding: 0.2rem 0.6rem;
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.2rem);
+  padding: 0.25rem 0.5rem;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s;
@@ -99,22 +129,49 @@ input[type="color"] {
 }
 
 input[type="range"] {
-  width: 200px;
+  width: min(200px, 100%);
+  min-width: 140px;
+}
+
+@media (min-width: 480px) {
+  .controls {
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1.25rem;
+  }
+  input[type="color"] {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  .controls {
+    padding: 1.5rem;
+  }
+  .control-group {
+    gap: 1rem;
+  }
 }
 
 select {
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
   border-radius: 4px;
   border: 1px solid #555;
   background-color: #222;
   color: inherit;
 }
 
+.mode-toggle {
+  justify-content: center;
+}
+
 .mode-toggle button {
   background-color: #222;
   border: 1px solid #555;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem clamp(0.75rem, 2vw + 0.5rem, 1rem);
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -139,12 +196,12 @@ select {
   background-color: #444;
 }
 
-/* Color Display */
+/* Color Display — mobile-first */
 .display-container {
-  min-height: 200px;
-  border-radius: 12px;
+  min-height: 160px;
+  border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   background-color: #1a1a1a; /* Checkerboard fallback base */
   
@@ -160,7 +217,27 @@ select {
 
 .static-mode {
   display: flex;
-  height: 200px;
+  height: 160px;
+}
+
+@media (min-width: 480px) {
+  .display-container {
+    min-height: 180px;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+  }
+  .static-mode {
+    height: 180px;
+  }
+}
+
+@media (min-width: 768px) {
+  .display-container {
+    min-height: 200px;
+  }
+  .static-mode {
+    height: 200px;
+  }
 }
 
 .color-box {
@@ -178,13 +255,13 @@ select {
 
 .tooltip {
   position: absolute;
-  bottom: 10px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0,0,0,0.7);
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.5vw + 0.4rem, 0.8rem);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
@@ -198,22 +275,29 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.25rem;
 }
 
 .animated {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%; /* Circle for animation mode looks nicer */
+  width: clamp(100px, 25vw, 150px);
+  height: clamp(100px, 25vw, 150px);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 30px rgba(0,0,0,0.3);
 }
 
+@media (min-width: 768px) {
+  .animation-mode {
+    padding: 2rem;
+  }
+}
+
 .label {
   text-align: center;
   font-weight: bold;
+  font-size: clamp(0.875rem, 1.5vw + 0.5rem, 1rem);
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
   pointer-events: none;
 }
