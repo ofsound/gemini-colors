@@ -19,7 +19,11 @@
 .steps-slider::-webkit-slider-runnable-track {
   width: 12px;
   border-radius: 0.5rem;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.35));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--semantic-foreground) 20%, transparent),
+    color-mix(in oklch, var(--semantic-foreground) 40%, transparent)
+  );
 }
 
 /* WebKit - thumb */
@@ -29,19 +33,25 @@
   height: 46px;
   margin-left: -8px;
   border-radius: 0.5rem;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  background: var(--semantic-foreground);
+  box-shadow: 0 2px 8px
+    color-mix(in oklch, var(--semantic-background) 55%, transparent);
 }
 
 .steps-slider:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 4px
+    color-mix(in oklch, var(--semantic-focus) 40%, transparent);
 }
 
 /* Firefox - track */
 .steps-slider::-moz-range-track {
   width: 12px;
   border-radius: 0.5rem;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.35));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--semantic-foreground) 20%, transparent),
+    color-mix(in oklch, var(--semantic-foreground) 40%, transparent)
+  );
 }
 
 /* Firefox - thumb */
@@ -50,10 +60,12 @@
   height: 46px;
   border-radius: 0.5rem;
   border: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  background: var(--semantic-foreground);
+  box-shadow: 0 2px 8px
+    color-mix(in oklch, var(--semantic-background) 55%, transparent);
 }
 
 .steps-slider:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 4px
+    color-mix(in oklch, var(--semantic-focus) 40%, transparent);
 }

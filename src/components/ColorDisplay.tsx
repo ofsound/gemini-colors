@@ -56,7 +56,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({
     };
 
     return (
-      <div className="mb-6 flex h-full min-h-[160px] items-center justify-center overflow-hidden rounded-[10px] bg-[#1a1a1a] [background-image:linear-gradient(45deg,#222_25%,transparent_25%),linear-gradient(-45deg,#222_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#222_75%),linear-gradient(-45deg,transparent_75%,#222_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.3)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
+      <div className="bg-surface mb-6 flex h-full min-h-[160px] items-center justify-center overflow-hidden rounded-[10px] [background-image:linear-gradient(45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(-45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%),linear-gradient(-45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.16)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
         <div
           className="flex size-[clamp(100px,25vw,150px)] items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.3)]"
           style={style}
@@ -82,7 +82,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({
   }
 
   return (
-    <div className="mb-6 flex h-full min-h-[160px] flex-1 overflow-hidden rounded-[10px] bg-[#1a1a1a] [background-image:linear-gradient(45deg,#222_25%,transparent_25%),linear-gradient(-45deg,#222_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#222_75%),linear-gradient(-45deg,transparent_75%,#222_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.3)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
+    <div className="bg-surface mb-6 flex h-full min-h-[160px] flex-1 overflow-hidden rounded-[10px] [background-image:linear-gradient(45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(-45deg,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%),linear-gradient(-45deg,transparent_75%,color-mix(in_oklch,var(--semantic-neutral-bg)_50%,transparent)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px] shadow-[0_8px_24px_rgba(0,0,0,0.16)] sm:mb-8 sm:min-h-[180px] sm:rounded-xl md:min-h-[200px]">
       {blocks}
     </div>
   );

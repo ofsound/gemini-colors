@@ -1,1 +1,173 @@
 @import "tailwindcss";
+
+:root {
+  --font-geist-sans: "Ubuntu";
+  --font-geist-mono: "Noto Sans";
+
+  --semantic-background: #09090b;
+  --semantic-foreground: #fafafa;
+  --semantic-muted: #a1a1aa;
+  --semantic-subtle: #a1a1aa;
+  --semantic-label: #d4d4d8;
+  --semantic-border: #27272a;
+  --semantic-border-strong: #52525b;
+  --semantic-surface: #18181b;
+  --semantic-surface-hover: #27272a;
+  --semantic-placeholder: #71717a;
+  --semantic-focus: #71717a;
+  --semantic-button-primary: #fafafa;
+  --semantic-button-primary-fg: #18181b;
+  --semantic-button-primary-hover: #e4e4e7;
+  --semantic-success-bg: rgb(6 78 59 / 0.2);
+  --semantic-success-fg: #34d399;
+  --semantic-warning-bg: rgb(120 53 15 / 0.3);
+  --semantic-warning-fg: #fbbf24;
+  --semantic-neutral-bg: #3f3f46;
+  --semantic-neutral-fg: #d4d4d8;
+}
+
+@supports not (color: light-dark(red, blue)) {
+  html.light {
+    --semantic-background: #fafafa;
+    --semantic-foreground: #18181b;
+    --semantic-muted: #52525b;
+    --semantic-subtle: #71717a;
+    --semantic-label: #3f3f46;
+    --semantic-border: #e4e4e7;
+    --semantic-border-strong: #a1a1aa;
+    --semantic-surface: #ffffff;
+    --semantic-surface-hover: #f4f4f5;
+    --semantic-placeholder: #a1a1aa;
+    --semantic-button-primary: #18181b;
+    --semantic-button-primary-fg: #ffffff;
+    --semantic-button-primary-hover: #27272a;
+    --semantic-success-bg: rgb(209 250 229 / 0.5);
+    --semantic-success-fg: #047857;
+    --semantic-warning-bg: #fef3c7;
+    --semantic-warning-fg: #b45309;
+    --semantic-neutral-bg: #e4e4e7;
+    --semantic-neutral-fg: #52525b;
+  }
+}
+
+@supports (color: light-dark(red, blue)) {
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  :root {
+    --semantic-background: light-dark(
+      theme(colors.zinc.50),
+      theme(colors.zinc.950)
+    );
+    --semantic-foreground: light-dark(
+      theme(colors.zinc.900),
+      theme(colors.zinc.100)
+    );
+    --semantic-muted: light-dark(
+      theme(colors.zinc.600),
+      theme(colors.zinc.400)
+    );
+    --semantic-subtle: light-dark(
+      theme(colors.zinc.500),
+      theme(colors.zinc.400)
+    );
+    --semantic-label: light-dark(
+      theme(colors.zinc.700),
+      theme(colors.zinc.300)
+    );
+    --semantic-border: light-dark(
+      theme(colors.zinc.200),
+      theme(colors.zinc.800)
+    );
+    --semantic-border-strong: light-dark(
+      theme(colors.zinc.300),
+      theme(colors.zinc.600)
+    );
+    --semantic-surface: light-dark(theme(colors.white), theme(colors.zinc.900));
+    --semantic-surface-hover: light-dark(
+      theme(colors.zinc.100),
+      theme(colors.zinc.800)
+    );
+    --semantic-placeholder: light-dark(
+      theme(colors.zinc.400),
+      theme(colors.zinc.500)
+    );
+    --semantic-focus: theme(colors.zinc.500);
+    --semantic-button-primary: light-dark(
+      theme(colors.zinc.900),
+      theme(colors.zinc.100)
+    );
+    --semantic-button-primary-fg: light-dark(
+      theme(colors.white),
+      theme(colors.zinc.900)
+    );
+    --semantic-button-primary-hover: light-dark(
+      theme(colors.zinc.800),
+      theme(colors.zinc.200)
+    );
+    --semantic-success-bg: light-dark(
+      theme(colors.emerald.50),
+      color-mix(in oklch, theme(colors.emerald.900) 30%, transparent)
+    );
+    --semantic-success-fg: light-dark(
+      theme(colors.emerald.700),
+      theme(colors.emerald.400)
+    );
+    --semantic-warning-bg: light-dark(
+      theme(colors.amber.100),
+      color-mix(in oklch, theme(colors.amber.900) 30%, transparent)
+    );
+    --semantic-warning-fg: light-dark(
+      theme(colors.amber.800),
+      theme(colors.amber.400)
+    );
+    --semantic-neutral-bg: light-dark(
+      theme(colors.zinc.200),
+      theme(colors.zinc.700)
+    );
+    --semantic-neutral-fg: light-dark(
+      theme(colors.zinc.600),
+      theme(colors.zinc.300)
+    );
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--semantic-background);
+  --color-foreground: var(--semantic-foreground);
+  --color-muted: var(--semantic-muted);
+  --color-subtle: var(--semantic-subtle);
+  --color-label: var(--semantic-label);
+  --color-border: var(--semantic-border);
+  --color-border-strong: var(--semantic-border-strong);
+  --color-surface: var(--semantic-surface);
+  --color-surface-hover: var(--semantic-surface-hover);
+  --color-placeholder: var(--semantic-placeholder);
+  --color-focus: var(--semantic-focus);
+  --color-button-primary: var(--semantic-button-primary);
+  --color-button-primary-fg: var(--semantic-button-primary-fg);
+  --color-button-primary-hover: var(--semantic-button-primary-hover);
+  --color-success-bg: var(--semantic-success-bg);
+  --color-success-fg: var(--semantic-success-fg);
+  --color-warning-bg: var(--semantic-warning-bg);
+  --color-warning-fg: var(--semantic-warning-fg);
+  --color-neutral-bg: var(--semantic-neutral-bg);
+  --color-neutral-fg: var(--semantic-neutral-fg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--semantic-background);
+  color: var(--semantic-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}

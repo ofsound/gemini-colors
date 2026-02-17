@@ -255,7 +255,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
         />
         <div className="flex w-[92px] max-w-[92px] min-w-0 shrink-0 flex-col items-stretch gap-2">
           <input
-            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-2 text-sm tracking-[0.04em] text-[#f5f5f5] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${hexInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
+            className={`border-border bg-background/50 text-foreground [font-family:'Noto Sans',sans-serif] placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
             type="text"
             value={hexInput}
             aria-label={`${label} hex color`}
@@ -273,7 +273,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
             }}
           />
           <input
-            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-2 text-sm tracking-[0.02em] text-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${rgbInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
+            className={`border-border bg-background/50 text-foreground [font-family:'Noto Sans',sans-serif] placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
             type="text"
             value={rgbInput}
             aria-label={`${label} rgb color`}
