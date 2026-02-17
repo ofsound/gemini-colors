@@ -1,0 +1,48 @@
+import "./StepsSlider.css";
+
+const STEPS_MIN = 1;
+const STEPS_MAX = 50;
+const STEPS_SLIDER_PRECISION = 1000;
+const STEPS_EXPONENT = 2.45;
+
+const clampNumber = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const stepsFromSliderPosition = (position: number) => {
+  const clampedPosition = clampNumber(position, 0, STEPS_SLIDER_PRECISION);
+  const normalizedPosition = clampedPosition / STEPS_SLIDER_PRECISION;
+  const curved = Math.pow(normalizedPosition, STEPS_EXPONENT);
+  const mapped = STEPS_MIN + (STEPS_MAX - STEPS_MIN) * curved;
+  return Math.round(mapped);
+};
+
+const sliderPositionFromSteps = (steps: number) => {
+  const clampedSteps = clampNumber(steps, STEPS_MIN, STEPS_MAX);
+  const normalizedSteps = (clampedSteps - STEPS_MIN) / (STEPS_MAX - STEPS_MIN);
+  const inverseCurved = Math.pow(normalizedSteps, 1 / STEPS_EXPONENT);
+  return Math.round(inverseCurved * STEPS_SLIDER_PRECISION);
+};
+
+type StepsSliderProps = {
+  value: number;
+  onChange: (steps: number) => void;
+};
+
+export function StepsSlider({ value, onChange }: StepsSliderProps) {
+  const sliderPosition = sliderPositionFromSteps(value);
+
+  return (
+    <input
+      className="steps-slider"
+      type="range"
+      min={0}
+      max={STEPS_SLIDER_PRECISION}
+      step={1}
+      value={sliderPosition}
+      onChange={(e) =>
+        onChange(stepsFromSliderPosition(Number(e.target.value)))
+      }
+      aria-label="Steps"
+    />
+  );
+}

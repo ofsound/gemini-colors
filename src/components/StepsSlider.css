@@ -1,0 +1,59 @@
+.steps-slider {
+  margin: 10% 0;
+  height: 80%;
+  min-height: 0;
+  width: 34px;
+  min-width: 140px;
+  cursor: ns-resize;
+  appearance: none;
+  background: transparent;
+  direction: rtl;
+  writing-mode: vertical-lr;
+}
+
+.steps-slider:focus-visible {
+  outline: none;
+}
+
+/* WebKit (Chrome, Safari, Edge) - track */
+.steps-slider::-webkit-slider-runnable-track {
+  width: 12px;
+  border-radius: 0.5rem;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.35));
+}
+
+/* WebKit - thumb */
+.steps-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 46px;
+  margin-left: -8px;
+  border-radius: 0.5rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.steps-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35);
+}
+
+/* Firefox - track */
+.steps-slider::-moz-range-track {
+  width: 12px;
+  border-radius: 0.5rem;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.35));
+}
+
+/* Firefox - thumb */
+.steps-slider::-moz-range-thumb {
+  width: 28px;
+  height: 46px;
+  border-radius: 0.5rem;
+  border: 0;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.steps-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35);
+}

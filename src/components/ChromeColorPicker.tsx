@@ -247,7 +247,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
       aria-label={`${label} color picker`}
     >
       <div
-        className={`mb-[0.7rem] flex items-center gap-3 ${reverseTopRow ? "flex-row-reverse" : ""}`}
+        className={`mb-3 flex items-center gap-3 ${reverseTopRow ? "flex-row-reverse" : ""}`}
       >
         <div
           className="h-[72px] min-w-0 flex-1 rounded-md"
@@ -255,7 +255,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
         />
         <div className="flex w-[92px] max-w-[92px] min-w-0 shrink-0 flex-col items-stretch gap-2">
           <input
-            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-[0.55rem] text-[0.9rem] tracking-[0.04em] text-[#f5f5f5] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${hexInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
+            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-2 text-sm tracking-[0.04em] text-[#f5f5f5] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${hexInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
             type="text"
             value={hexInput}
             aria-label={`${label} hex color`}
@@ -273,7 +273,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
             }}
           />
           <input
-            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-[0.55rem] text-[0.9rem] tracking-[0.02em] text-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${rgbInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
+            className={`[font-family:'Noto Sans',sans-serif] box-border h-8 w-full max-w-full rounded border-0 bg-black/20 px-2 text-sm tracking-[0.02em] text-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/45 ${rgbInvalid ? "ring-1 ring-[#ff6b6b]" : ""}`}
             type="text"
             value={rgbInput}
             aria-label={`${label} rgb color`}
