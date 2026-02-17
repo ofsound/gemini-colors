@@ -542,14 +542,16 @@ input[type="range"] {
   flex-direction: column;
   align-items: stretch;
   gap: 0.35rem;
-  width: 128px;
+  width: 92px;
+  max-width: 92px;
   flex-shrink: 0;
   min-width: 0;
 }
 
 .chrome-rgb-input {
-  width: 110px;
+  width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
   height: 32px;
   padding: 0 0.55rem;
   border: 0;
@@ -570,8 +572,9 @@ input[type="range"] {
 }
 
 .chrome-hex-input {
-  width: 110px;
+  width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
   height: 32px;
   padding: 0 0.55rem;
   border: 0;

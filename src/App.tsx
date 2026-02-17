@@ -75,16 +75,7 @@ function App() {
           <ColorDisplay startColor={startColor} endColor={endColor} steps={steps} colorSpace={colorSpace} mode="static" />
 
           <div className="vertical-steps-wrap" aria-label="Steps">
-            <input
-              className="steps-slider-vertical"
-              type="range"
-              min="0"
-              max={STEPS_SLIDER_PRECISION}
-              step="1"
-              value={sliderPosition}
-              onChange={(e) => setSteps(stepsFromSliderPosition(Number(e.target.value)))}
-              aria-label="Steps"
-            />
+            <input className="steps-slider-vertical" type="range" min="0" max={STEPS_SLIDER_PRECISION} step="1" value={sliderPosition} onChange={(e) => setSteps(stepsFromSliderPosition(Number(e.target.value)))} aria-label="Steps" />
           </div>
         </div>
 
