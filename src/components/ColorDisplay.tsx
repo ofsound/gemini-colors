@@ -49,13 +49,7 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
 
     return (
       <div className="display-container animation-mode">
-        <div className="color-box animated" style={style}>
-          <div className="label">
-            {Math.round(percentage)}%
-            <br />
-            {colorSpace}
-          </div>
-        </div>
+        <div className="color-box animated" style={style}></div>
       </div>
     );
   }
@@ -74,9 +68,5 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({startColor, endColor,
     );
   }
 
-  return (
-    <div className="display-container static-mode">
-      {blocks}
-    </div>
-  );
+  return <div className="display-container static-mode">{blocks}</div>;
 };

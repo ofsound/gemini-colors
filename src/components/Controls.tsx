@@ -23,9 +23,8 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
     <div className="controls">
       <div className="control-group">
         <label>
-          Start Color
           <input type="color" value={startColor} onChange={(e) => setStartColor(e.target.value)} />
-          <span className="color-value">{startColor}</span>
+          {/* <span className="color-value">{startColor}</span> */}
         </label>
 
         <button
@@ -40,22 +39,23 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
         </button>
 
         <label>
-          End Color
           <input type="color" value={endColor} onChange={(e) => setEndColor(e.target.value)} />
-          <span className="color-value">{endColor}</span>
+          {/* <span className="color-value">{endColor}</span> */}
         </label>
       </div>
 
-      <div className="control-group">
-        <label>
-          Steps ({steps})
-          <input type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} />
-        </label>
-      </div>
+      {mode === "static" && (
+        <div className="control-group">
+          <label>
+            Steps&nbsp;({steps})
+            <input type="range" min="3" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} />
+          </label>
+        </div>
+      )}
 
       <div className="control-group">
         <label>
-          Interpolation Space
+          Color Space
           <select value={colorSpace} onChange={(e) => setColorSpace(e.target.value as ColorSpace)}>
             {COLOR_SPACES.map((space) => (
               <option key={space} value={space}>
@@ -67,11 +67,11 @@ export const Controls: React.FC<ControlsProps> = ({startColor, setStartColor, en
       </div>
 
       <div className="control-group mode-toggle">
-        <button className={mode === "static" ? "active" : ""} onClick={() => setMode("static")}>
-          Static
-        </button>
         <button className={mode === "animation" ? "active" : ""} onClick={() => setMode("animation")}>
           Animation
+        </button>
+        <button className={mode === "static" ? "active" : ""} onClick={() => setMode("static")}>
+          Static
         </button>
       </div>
     </div>
