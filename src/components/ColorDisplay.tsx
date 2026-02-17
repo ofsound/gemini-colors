@@ -1,5 +1,4 @@
-import React from "react";
-import type { ColorSpace } from "../types/color";
+import type { ColorSpace } from "@/types/color";
 
 interface ColorDisplayProps {
   startColor: string;
@@ -8,12 +7,12 @@ interface ColorDisplayProps {
   colorSpace: ColorSpace;
 }
 
-export const ColorDisplay: React.FC<ColorDisplayProps> = ({
+export function ColorDisplay({
   startColor,
   endColor,
   steps,
   colorSpace,
-}) => {
+}: ColorDisplayProps) {
   const blocks = [];
   for (let i = 0; i < steps; i++) {
     const percentage = steps === 1 ? 0 : (i / (steps - 1)) * 100;
@@ -34,4 +33,4 @@ export const ColorDisplay: React.FC<ColorDisplayProps> = ({
       {blocks}
     </div>
   );
-};
+}

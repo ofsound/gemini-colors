@@ -1,15 +1,13 @@
-import "./StepsSlider.css";
+import "@/components/StepsSlider.css";
+import { clamp } from "@/utils/clamp";
 
 const STEPS_MIN = 1;
 const STEPS_MAX = 50;
 const STEPS_SLIDER_PRECISION = 1000;
 const STEPS_EXPONENT = 2.45;
 
-const clampNumber = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
-
 const stepsFromSliderPosition = (position: number) => {
-  const clampedPosition = clampNumber(position, 0, STEPS_SLIDER_PRECISION);
+  const clampedPosition = clamp(position, 0, STEPS_SLIDER_PRECISION);
   const normalizedPosition = clampedPosition / STEPS_SLIDER_PRECISION;
   const curved = Math.pow(normalizedPosition, STEPS_EXPONENT);
   const mapped = STEPS_MIN + (STEPS_MAX - STEPS_MIN) * curved;
@@ -17,7 +15,7 @@ const stepsFromSliderPosition = (position: number) => {
 };
 
 const sliderPositionFromSteps = (steps: number) => {
-  const clampedSteps = clampNumber(steps, STEPS_MIN, STEPS_MAX);
+  const clampedSteps = clamp(steps, STEPS_MIN, STEPS_MAX);
   const normalizedSteps = (clampedSteps - STEPS_MIN) / (STEPS_MAX - STEPS_MIN);
   const inverseCurved = Math.pow(normalizedSteps, 1 / STEPS_EXPONENT);
   return Math.round(inverseCurved * STEPS_SLIDER_PRECISION);

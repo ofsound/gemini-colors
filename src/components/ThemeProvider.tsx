@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
-import { type Theme, ThemeContext } from "../context/ThemeContext";
+import { type Theme, ThemeContext } from "@/context/ThemeContext";
 
 const STORAGE_KEY = "theme";
 
@@ -44,15 +44,14 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     return () => media.removeEventListener("change", listener);
   }, []);
 
-  const setTheme = (nextTheme: Theme) => {
-    setThemeState(nextTheme);
-  };
-
   const toggleTheme = () => {
     setThemeState((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
-  const value = useMemo(() => ({ theme, setTheme, toggleTheme }), [theme]);
+  const value = useMemo(
+    () => ({ theme, toggleTheme }),
+    [theme],
+  );
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

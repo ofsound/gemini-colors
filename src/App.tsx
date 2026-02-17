@@ -1,19 +1,9 @@
-import { useRef, useState, type KeyboardEvent } from "react";
-import { ColorDisplay } from "./components/ColorDisplay";
-import { StepsSlider } from "./components/StepsSlider";
-import type { ColorSpace } from "./types/color";
-import { ChromeColorPicker } from "./components/ChromeColorPicker";
+import { useRef, useState, useCallback, type KeyboardEvent } from "react";
+import { ColorDisplay } from "@/components/ColorDisplay";
+import { StepsSlider } from "@/components/StepsSlider";
+import { COLOR_SPACES, type ColorSpace } from "@/types/color";
+import { ChromeColorPicker } from "@/components/ChromeColorPicker";
 import { useTheme } from "@/hooks/useTheme";
-
-const COLOR_SPACES: ColorSpace[] = [
-  "srgb",
-  "hsl",
-  "hwb",
-  "lch",
-  "oklch",
-  "lab",
-  "oklab",
-];
 
 function App() {
   const { theme, toggleTheme } = useTheme();
@@ -23,6 +13,11 @@ function App() {
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
 
   const radioGroupRef = useRef<HTMLDivElement>(null);
+
+  const handleSwapColors = useCallback(() => {
+    setStartColor(endColor);
+    setEndColor(startColor);
+  }, [startColor, endColor]);
 
   const handleColorSpaceKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const { key } = event;
@@ -113,12 +108,8 @@ function App() {
               />
 
               <button
-                className="border-border bg-button-primary text-button-primary-fg hover:border-border-strong hover:bg-button-primary-hover focus-visible:outline-focus/60 mt-18 min-h-[42px] min-w-[52px] self-start rounded-[10px] border px-3 py-3 align-top text-lg font-bold transition-[background,border-color,box-shadow] duration-200 ease-in-out focus-visible:outline-2 focus-visible:outline-offset-2 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.24),0_1px_3px_rgba(0,0,0,0.2)]"
-                onClick={() => {
-                  const temp = startColor;
-                  setStartColor(endColor);
-                  setEndColor(temp);
-                }}
+                className="border-border bg-button-primary text-button-primary-fg hover:border-border-strong hover:bg-button-primary-hover focus-visible:outline-focus/60 mt-16 min-h-[42px] min-w-[52px] self-start rounded-[10px] border px-3 py-3 align-top text-lg font-bold transition-[background,border-color,box-shadow] duration-200 ease-in-out focus-visible:outline-2 focus-visible:outline-offset-2 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.24),0_1px_3px_rgba(0,0,0,0.2)]"
+                onClick={handleSwapColors}
                 title="Swap Colors"
                 aria-label="Swap colors"
               >
@@ -167,14 +158,14 @@ function App() {
                     data-index={index}
                     className="focus-visible:outline-focus/60 flex w-full cursor-pointer items-center justify-start gap-2 px-1 py-0.5 text-sm font-bold tracking-[0.05em] uppercase outline-none focus-visible:outline-2 focus-visible:outline-offset-2"
                   >
-                    <input
-                      type="radio"
-                      aria-hidden="true"
-                      tabIndex={-1}
-                      readOnly
-                      checked={isSelected}
-                      className="accent-foreground pointer-events-none m-0 scale-100"
-                    />
+                    <span
+                      className="border-border bg-background flex size-4 shrink-0 items-center justify-center rounded-full border-2"
+                      aria-hidden
+                    >
+                      {isSelected ? (
+                        <span className="size-2 rounded-full bg-foreground" />
+                      ) : null}
+                    </span>
                     <span
                       className={`inline-flex w-max max-w-full items-center justify-center rounded-full px-[0.4em] py-[0.1em] ${
                         isSelected

@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { clamp } from "@/utils/clamp";
+import { expandShortHex } from "@/utils/color";
 
 interface ChromeColorPickerProps {
   value: string;
@@ -19,18 +21,8 @@ interface HSV {
   v: number;
 }
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
-
 const hexToRgb = (hex: string): RGB => {
-  const normalized = hex.replace("#", "").trim();
-  const safeHex =
-    normalized.length === 3
-      ? normalized
-          .split("")
-          .map((char) => char + char)
-          .join("")
-      : normalized.padEnd(6, "0").slice(0, 6);
+  const safeHex = expandShortHex(hex);
 
   const parsed = Number.parseInt(safeHex, 16);
   return {
@@ -104,12 +96,7 @@ const normalizeHex = (input: string): string | null => {
 
   if (!isShort && !isLong) return null;
 
-  const full = isShort
-    ? withoutHash
-        .split("")
-        .map((char) => char + char)
-        .join("")
-    : withoutHash;
+  const full = isShort ? expandShortHex(withoutHash) : withoutHash;
 
   return `#${full.toUpperCase()}`;
 };
@@ -118,6 +105,23 @@ const rgbToDisplayString = ({ r, g, b }: RGB) => `${r}, ${g}, ${b}`;
 
 const SV_PANEL_BACKGROUND =
   "linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0) 50%), linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, #fff 100%), linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)";
+
+function pointerEventToHsv(
+  rect: DOMRect,
+  clientX: number,
+  clientY: number,
+): HSV {
+  const x = clamp(clientX - rect.left, 0, rect.width);
+  const y = clamp(clientY - rect.top, 0, rect.height);
+  const nextH = (x / rect.width) * 360;
+  const yRatio = y / rect.height;
+  const inTopHalf = yRatio <= 0.5;
+
+  const nextS = inTopHalf ? 100 : 100 - ((yRatio - 0.5) / 0.5) * 100;
+  const nextV = inTopHalf ? (yRatio / 0.5) * 100 : 100;
+
+  return { h: nextH, s: nextS, v: nextV };
+}
 
 const normalizeRgbInput = (input: string): RGB | null => {
   const trimmed = input.trim();
@@ -140,12 +144,12 @@ const normalizeRgbInput = (input: string): RGB | null => {
   };
 };
 
-export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
+export function ChromeColorPicker({
   value,
   onChange,
   label,
   reverseTopRow = false,
-}) => {
+}: ChromeColorPickerProps) {
   const hsv = useMemo(() => rgbToHsv(hexToRgb(value)), [value]);
   const [dragMode, setDragMode] = useState<"xy" | null>(null);
   const [hexInput, setHexInput] = useState(value.toUpperCase());
@@ -153,7 +157,10 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
   const [rgbInput, setRgbInput] = useState(rgbToDisplayString(hexToRgb(value)));
   const [rgbInvalid, setRgbInvalid] = useState(false);
   const [prevValue, setPrevValue] = useState(value);
+  const panelRef = useRef<HTMLDivElement>(null);
 
+  // Sync external prop changes to internal input state during render
+  // (preferred over useEffect to avoid an extra render cycle)
   if (value !== prevValue) {
     setPrevValue(value);
     setHexInput(value.toUpperCase());
@@ -168,20 +175,10 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
     const handlePointerMove = (event: PointerEvent) => {
       if (dragMode !== "xy") return;
 
-      const panel = document.getElementById(`${label}-xy-panel`);
-      if (!panel) return;
-      const rect = panel.getBoundingClientRect();
-      const x = clamp(event.clientX - rect.left, 0, rect.width);
-      const y = clamp(event.clientY - rect.top, 0, rect.height);
-
-      const nextH = (x / rect.width) * 360;
-      const yRatio = y / rect.height;
-      const inTopHalf = yRatio <= 0.5;
-
-      const nextS = inTopHalf ? 100 : 100 - ((yRatio - 0.5) / 0.5) * 100;
-      const nextV = inTopHalf ? (yRatio / 0.5) * 100 : 100;
-
-      onChange(hsvToHex({ h: nextH, s: nextS, v: nextV }));
+      if (!panelRef.current) return;
+      const rect = panelRef.current.getBoundingClientRect();
+      const hsv = pointerEventToHsv(rect, event.clientX, event.clientY);
+      onChange(hsvToHex(hsv));
     };
 
     const handlePointerUp = () => setDragMode(null);
@@ -193,7 +190,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [dragMode, label, onChange]);
+  }, [dragMode, onChange]);
 
   const saturationPointerX = `${(hsv.h / 360) * 100}%`;
   const saturationPointerY =
@@ -204,18 +201,9 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
   const onXYPointerDown: React.PointerEventHandler<HTMLDivElement> = (
     event,
   ) => {
-    const panel = event.currentTarget;
-    const rect = panel.getBoundingClientRect();
-    const x = clamp(event.clientX - rect.left, 0, rect.width);
-    const y = clamp(event.clientY - rect.top, 0, rect.height);
-    const nextH = (x / rect.width) * 360;
-    const yRatio = y / rect.height;
-    const inTopHalf = yRatio <= 0.5;
-
-    const nextS = inTopHalf ? 100 : 100 - ((yRatio - 0.5) / 0.5) * 100;
-    const nextV = inTopHalf ? (yRatio / 0.5) * 100 : 100;
-
-    onChange(hsvToHex({ h: nextH, s: nextS, v: nextV }));
+    const rect = event.currentTarget.getBoundingClientRect();
+    const hsv = pointerEventToHsv(rect, event.clientX, event.clientY);
+    onChange(hsvToHex(hsv));
     setDragMode("xy");
   };
 
@@ -296,7 +284,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
       </div>
 
       <div
-        id={`${label}-xy-panel`}
+        ref={panelRef}
         className="border-border relative h-[clamp(80px,18.5vw,120px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
         style={{ background: SV_PANEL_BACKGROUND }}
         onPointerDown={onXYPointerDown}
@@ -305,6 +293,7 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(hsv.v)}
+        aria-valuetext={`Hue: ${Math.round(hsv.h)}°, Saturation: ${Math.round(hsv.s)}%, Value: ${Math.round(hsv.v)}%`}
       >
         <div
           className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
@@ -316,4 +305,4 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({
       </div>
     </div>
   );
-};
+}

@@ -17,9 +17,6 @@
     theme(colors.zinc.900),
     theme(colors.zinc.100)
   );
-  --semantic-muted: light-dark(theme(colors.zinc.600), theme(colors.zinc.400));
-  --semantic-subtle: light-dark(theme(colors.zinc.500), theme(colors.zinc.400));
-  --semantic-label: light-dark(theme(colors.zinc.700), theme(colors.zinc.300));
   --semantic-border: light-dark(theme(colors.zinc.400), theme(colors.zinc.800));
   --semantic-border-strong: light-dark(
     theme(colors.zinc.300),
@@ -47,22 +44,6 @@
     theme(colors.zinc.800),
     theme(colors.zinc.200)
   );
-  --semantic-success-bg: light-dark(
-    theme(colors.emerald.50),
-    color-mix(in oklch, theme(colors.emerald.900) 30%, transparent)
-  );
-  --semantic-success-fg: light-dark(
-    theme(colors.emerald.700),
-    theme(colors.emerald.400)
-  );
-  --semantic-warning-bg: light-dark(
-    theme(colors.amber.100),
-    color-mix(in oklch, theme(colors.amber.900) 30%, transparent)
-  );
-  --semantic-warning-fg: light-dark(
-    theme(colors.amber.800),
-    theme(colors.amber.400)
-  );
   --semantic-neutral-bg: light-dark(
     theme(colors.zinc.200),
     theme(colors.zinc.700)
@@ -80,9 +61,6 @@
 
   --color-background: var(--semantic-background);
   --color-foreground: var(--semantic-foreground);
-  --color-muted: var(--semantic-muted);
-  --color-subtle: var(--semantic-subtle);
-  --color-label: var(--semantic-label);
   --color-border: var(--semantic-border);
   --color-border-strong: var(--semantic-border-strong);
   --color-surface: var(--semantic-surface);
@@ -92,10 +70,6 @@
   --color-button-primary: var(--semantic-button-primary);
   --color-button-primary-fg: var(--semantic-button-primary-fg);
   --color-button-primary-hover: var(--semantic-button-primary-hover);
-  --color-success-bg: var(--semantic-success-bg);
-  --color-success-fg: var(--semantic-success-fg);
-  --color-warning-bg: var(--semantic-warning-bg);
-  --color-warning-fg: var(--semantic-warning-fg);
   --color-neutral-bg: var(--semantic-neutral-bg);
   --color-neutral-fg: var(--semantic-neutral-fg);
 }

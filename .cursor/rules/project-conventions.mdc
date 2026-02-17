@@ -1,0 +1,12 @@
+---
+description: Project conventions for gemini-colors
+alwaysApply: true
+---
+
+# Gemini Colors Conventions
+
+- Use `@/` path alias for all imports from `src/`
+- Import `ColorSpace` and `COLOR_SPACES` from `@/types/color` – do not redefine
+- Use existing theme via `useTheme()` from `@/hooks/useTheme`
+- Prefer Tailwind classes; use inline `style` only for dynamic values (colors, dimensions from props/state)
+- Add shared utilities to `src/utils/` (e.g. `clamp`, color helpers) rather than duplicating in components
