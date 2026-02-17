@@ -232,24 +232,6 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
         <div className="chrome-swatch" style={{backgroundColor: value}} />
         <div className="chrome-hex-editor">
           <input
-            className={`chrome-rgb-input${rgbInvalid ? " invalid" : ""}`}
-            type="text"
-            value={rgbInput}
-            aria-label={`${label} rgb color`}
-            spellCheck={false}
-            onChange={(event) => {
-              setRgbInput(event.target.value);
-              if (rgbInvalid) setRgbInvalid(false);
-            }}
-            onBlur={commitRgbInput}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                commitRgbInput();
-              }
-            }}
-          />
-          <input
             className={`chrome-hex-input${hexInvalid ? " invalid" : ""}`}
             type="text"
             value={hexInput}
@@ -267,6 +249,25 @@ export const ChromeColorPicker: React.FC<ChromeColorPickerProps> = ({value, onCh
               }
             }}
           />
+          <input
+            className={`chrome-rgb-input${rgbInvalid ? " invalid" : ""}`}
+            type="text"
+            value={rgbInput}
+            aria-label={`${label} rgb color`}
+            spellCheck={false}
+            onChange={(event) => {
+              setRgbInput(event.target.value);
+              if (rgbInvalid) setRgbInvalid(false);
+            }}
+            onBlur={commitRgbInput}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                commitRgbInput();
+              }
+            }}
+          />
+
           <span className="chrome-hex-hint">Hex</span>
         </div>
       </div>
