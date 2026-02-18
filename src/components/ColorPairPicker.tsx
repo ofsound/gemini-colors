@@ -25,10 +25,11 @@ export function ColorPairPicker({
         value={startColor}
         onChange={onStartChange}
         label="Start"
+        reverseOnDesktop
       />
 
       <button
-        className="border-border bg-button-primary-bg text-button-primary-fg hover:border-border-strong hover:bg-button-primary-bg-hover focus-visible:outline-focus/60 mt-16 flex size-9.5 items-center justify-center rounded-lg border focus-visible:outline-2 focus-visible:outline-offset-2 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.24),0_1px_3px_rgba(0,0,0,0.2)]"
+        className="swap-btn text-button-primary-fg focus-visible:outline-focus/60 mt-16 flex size-9.5 items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
         onClick={handleSwap}
         title="Swap Colors"
         aria-label="Swap colors"
@@ -49,11 +50,7 @@ export function ColorPairPicker({
         </svg>
       </button>
 
-      <ChromeColorPicker
-        value={endColor}
-        onChange={onEndChange}
-        label="End"
-      />
+      <ChromeColorPicker value={endColor} onChange={onEndChange} label="End" />
     </div>
   );
 }

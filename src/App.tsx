@@ -1,21 +1,38 @@
 import { useState } from "react";
-import { ColorDisplay } from "@/components/ColorDisplay";
-import { StepsSlider } from "@/components/StepsSlider";
-import { type ColorSpace } from "@/types/color";
-import { ColorPairPicker } from "@/components/ColorPairPicker";
-import { ColorSpaceSelector } from "@/components/ColorSpaceSelector";
 import { useTheme } from "@/hooks/useTheme";
+import { ColorEntity } from "@/components/ColorEntity";
 
 function App() {
   const { theme, toggleTheme } = useTheme();
-  const [startColor, setStartColor] = useState("#0000ff");
-  const [endColor, setEndColor] = useState("#ff0000");
-  const [steps, setSteps] = useState(10);
-  const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
+  const [count, setCount] = useState(1);
 
   return (
     <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-4xl p-4 antialiased">
-      <div className="mb-4 flex items-center justify-end">
+      <div className="mb-[1.4em] flex items-center justify-end gap-3">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Remove color entity"
+            disabled={count <= 1}
+            onClick={() => setCount((c) => c - 1)}
+            className="border-border bg-surface text-foreground inline-flex size-8 items-center justify-center rounded-md border text-sm font-medium disabled:opacity-40"
+          >
+            −
+          </button>
+          <span className="text-foreground min-w-[2ch] text-center text-xs font-medium tabular-nums">
+            {count}
+          </span>
+          <button
+            type="button"
+            aria-label="Add color entity"
+            disabled={count >= 10}
+            onClick={() => setCount((c) => c + 1)}
+            className="border-border bg-surface text-foreground inline-flex size-8 items-center justify-center rounded-md border text-sm font-medium disabled:opacity-40"
+          >
+            +
+          </button>
+        </div>
+
         <button
           type="button"
           role="switch"
@@ -29,31 +46,15 @@ function App() {
         </button>
       </div>
 
-      <h1 className="font-heading mb-9 text-center font-semibold leading-[1.15] text-[clamp(1.5rem,0.75rem+3.75vw,3.75rem)]">
+      <h1 className="font-heading mb-[.8em] text-center text-[clamp(1.5rem,0.75rem+3.75vw,3.75rem)] leading-[1.15] font-semibold">
         Color Space Interpolation
       </h1>
 
-      <main>
-        <div className="mb-4 flex h-40 gap-4">
-          <ColorDisplay
-            startColor={startColor}
-            endColor={endColor}
-            steps={steps}
-            colorSpace={colorSpace}
-          />
-          <StepsSlider value={steps} onChange={setSteps} />
-        </div>
-
-        <div className="flex flex-col gap-4 sm:flex-row sm:flex-row-reverse">
-          <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
-          <ColorPairPicker
-            startColor={startColor}
-            endColor={endColor}
-            onStartChange={setStartColor}
-            onEndChange={setEndColor}
-          />
-        </div>
-      </main>
+      <div className="flex flex-col gap-10">
+        {Array.from({ length: count }, (_, i) => (
+          <ColorEntity key={i} />
+        ))}
+      </div>
     </div>
   );
 }

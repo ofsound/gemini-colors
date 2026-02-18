@@ -6,6 +6,8 @@ interface ChromeColorPickerProps {
   value: string;
   onChange: (color: string) => void;
   label: string;
+  /** On desktop: in the inputs row, show swatch first then inputs (default: inputs first) */
+  reverseOnDesktop?: boolean;
 }
 
 interface RGB {
@@ -147,6 +149,7 @@ export function ChromeColorPicker({
   value,
   onChange,
   label,
+  reverseOnDesktop = false,
 }: ChromeColorPickerProps) {
   const hsv = useMemo(() => rgbToHsv(hexToRgb(value)), [value]);
   const [dragMode, setDragMode] = useState<"xy" | null>(null);
@@ -234,16 +237,14 @@ export function ChromeColorPicker({
       className="w-[clamp(130px,42vw,320px)] min-w-0 flex-1 select-none"
       aria-label={`${label} color picker`}
     >
-      {/* Mobile: panel top, inputs row (inputs + swatch) bottom. Desktop: inputs row top, panel bottom */}
+      {/* Mobile: panel top, inputs row bottom. Desktop: inputs row top, panel bottom */}
       <div className="flex flex-col flex-col-reverse gap-3 sm:flex-col">
         <div
-          className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center"
+          className={`mb-3 flex flex-col gap-3 sm:items-start ${reverseOnDesktop ? "sm:flex-row-reverse" : "sm:flex-row"}`}
         >
-          <div
-            className="flex w-full min-w-0 shrink-0 flex-col items-stretch gap-2 sm:w-[92px] sm:max-w-[92px]"
-          >
+          <div className="flex w-full min-w-0 flex-col items-stretch gap-2 sm:min-w-[12ch]">
             <input
-              className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-sans text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
+              className={`border-border bg-neutral-bg text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full min-w-0 rounded border px-2 font-mono text-xs font-semibold tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
               type="text"
               value={hexInput}
               aria-label={`${label} hex color`}
@@ -261,7 +262,7 @@ export function ChromeColorPicker({
               }}
             />
             <input
-              className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-sans text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
+              className={`border-border bg-neutral-bg text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full min-w-0 rounded border px-2 font-mono text-xs font-semibold tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
               type="text"
               value={rgbInput}
               aria-label={`${label} rgb color`}
@@ -280,7 +281,7 @@ export function ChromeColorPicker({
             />
           </div>
           <div
-            className="h-[72px] min-w-0 flex-1 rounded-md"
+            className="h-[72px] w-full rounded-md"
             style={{ backgroundColor: value }}
           />
         </div>
@@ -308,5 +309,3 @@ export function ChromeColorPicker({
     </div>
   );
 }
-
-
