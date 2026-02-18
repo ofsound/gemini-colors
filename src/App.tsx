@@ -61,25 +61,23 @@ function App() {
 
   return (
     <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-[1280px] p-4 text-center font-sans text-sm antialiased">
-      <header>
-        <div className="mb-4 flex items-center justify-end">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={theme === "dark"}
-            aria-label="Toggle dark mode"
-            onClick={toggleTheme}
-            className="border-border bg-surface text-foreground hover:bg-surface-hover inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors"
-          >
-            <span>{theme === "dark" ? "🌙" : "☀️"}</span>
-            <span>{theme === "dark" ? "Dark" : "Light"}</span>
-          </button>
-        </div>
+      <div className="mb-4 flex items-center justify-end">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={theme === "dark"}
+          aria-label="Toggle dark mode"
+          onClick={toggleTheme}
+          className="border-border bg-surface text-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold"
+        >
+          <span>{theme === "dark" ? "🌙" : "☀️"}</span>
+          <span>{theme === "dark" ? "Dark" : "Light"}</span>
+        </button>
+      </div>
 
-        <h1 className="font-heading mb-9 text-6xl leading-[1.15] font-normal">
-          Color Space Interpolation
-        </h1>
-      </header>
+      <h1 className="font-heading mb-9 text-6xl leading-[1.15] font-semibold">
+        Color Space Interpolation
+      </h1>
 
       <main>
         <div className="mb-6 flex h-[160px] items-stretch gap-6">
@@ -108,7 +106,7 @@ function App() {
               />
 
               <button
-                className="border-border bg-button-primary text-button-primary-fg hover:border-border-strong hover:bg-button-primary-hover focus-visible:outline-focus/60 mt-16 min-h-[42px] min-w-[52px] self-start rounded-[10px] border px-3 py-3 align-top text-lg font-bold transition-[background,border-color,box-shadow] duration-200 ease-in-out focus-visible:outline-2 focus-visible:outline-offset-2 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.24),0_1px_3px_rgba(0,0,0,0.2)]"
+                className="border-border bg-button-primary-bg text-button-primary-fg hover:border-border-strong hover:bg-button-primary-hover focus-visible:outline-focus/60 mt-16 min-h-[42px] min-w-[52px] self-start rounded-[10px] border px-3 py-3 align-top text-lg font-bold focus-visible:outline-2 focus-visible:outline-offset-2 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.24),0_1px_3px_rgba(0,0,0,0.2)]"
                 onClick={handleSwapColors}
                 title="Swap Colors"
                 aria-label="Swap colors"
@@ -169,7 +167,7 @@ function App() {
                     <span
                       className={`inline-flex w-max max-w-full items-center justify-center rounded-full px-[0.4em] py-[0.1em] ${
                         isSelected
-                          ? "bg-border text-foreground"
+                          ? "bg-neutral-selected-bg text-foreground"
                           : "bg-neutral-bg text-neutral-fg"
                       }`}
                     >

@@ -21,8 +21,8 @@
   border-radius: 0.5rem;
   background: linear-gradient(
     to bottom,
-    color-mix(in oklch, var(--semantic-foreground) 20%, transparent),
-    color-mix(in oklch, var(--semantic-foreground) 40%, transparent)
+    color-mix(in oklch, var(--color-foreground) 20%, transparent),
+    color-mix(in oklch, var(--color-foreground) 40%, transparent)
   );
 }
 
@@ -30,17 +30,20 @@
 .steps-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 28px;
-  height: 46px;
+  height: 30px;
   margin-left: -8px;
   border-radius: 0.5rem;
-  background: var(--semantic-foreground);
+  background: var(--color-button-primary-bg);
   box-shadow: 0 2px 8px
-    color-mix(in oklch, var(--semantic-background) 55%, transparent);
+    color-mix(in oklch, var(--color-background) 55%, transparent);
+}
+
+.steps-slider:hover::-webkit-slider-thumb {
+  background: var(--color-button-primary-hover);
 }
 
 .steps-slider:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 4px
-    color-mix(in oklch, var(--semantic-focus) 40%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-focus) 40%, transparent);
 }
 
 /* Firefox - track */
@@ -49,23 +52,26 @@
   border-radius: 0.5rem;
   background: linear-gradient(
     to bottom,
-    color-mix(in oklch, var(--semantic-foreground) 20%, transparent),
-    color-mix(in oklch, var(--semantic-foreground) 40%, transparent)
+    color-mix(in oklch, var(--color-foreground) 20%, transparent),
+    color-mix(in oklch, var(--color-foreground) 40%, transparent)
   );
 }
 
 /* Firefox - thumb */
 .steps-slider::-moz-range-thumb {
   width: 28px;
-  height: 46px;
+  height: 30px;
   border-radius: 0.5rem;
   border: 0;
-  background: var(--semantic-foreground);
+  background: var(--color-button-primary-bg);
   box-shadow: 0 2px 8px
-    color-mix(in oklch, var(--semantic-background) 55%, transparent);
+    color-mix(in oklch, var(--color-background) 55%, transparent);
+}
+
+.steps-slider:hover::-moz-range-thumb {
+  background: var(--color-button-primary-hover);
 }
 
 .steps-slider:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 4px
-    color-mix(in oklch, var(--semantic-focus) 40%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-focus) 40%, transparent);
 }
