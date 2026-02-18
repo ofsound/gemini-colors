@@ -37,7 +37,7 @@
 }
 
 .steps-slider:hover::-webkit-slider-thumb {
-  background: var(--color-button-primary-hover);
+  background: var(--color-button-primary-bg-hover);
 }
 
 .steps-slider:focus-visible::-webkit-slider-thumb {
@@ -67,7 +67,7 @@
 }
 
 .steps-slider:hover::-moz-range-thumb {
-  background: var(--color-button-primary-hover);
+  background: var(--color-button-primary-bg-hover);
 }
 
 .steps-slider:focus-visible::-moz-range-thumb {

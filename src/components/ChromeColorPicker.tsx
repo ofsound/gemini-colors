@@ -285,7 +285,7 @@ export function ChromeColorPicker({
 
       <div
         ref={panelRef}
-        className="border-border relative h-[clamp(80px,18.5vw,120px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
+        className="border-border relative h-[clamp(100px,23.125vw,150px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
         style={{ background: SV_PANEL_BACKGROUND }}
         onPointerDown={onXYPointerDown}
         role="slider"

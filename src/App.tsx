@@ -14,7 +14,7 @@ function App() {
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
 
   return (
-    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-[1280px] p-4 text-center font-sans text-sm antialiased">
+    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-4xl p-4 text-center font-sans text-sm antialiased">
       <div className="mb-4 flex items-center justify-end">
         <button
           type="button"
@@ -34,30 +34,23 @@ function App() {
       </h1>
 
       <main>
-        <div className="mb-6 flex h-[160px] items-stretch gap-6">
+        <div className="mb-4 flex h-40 gap-4">
           <ColorDisplay
             startColor={startColor}
             endColor={endColor}
             steps={steps}
             colorSpace={colorSpace}
           />
-
-          <div
-            className="border-border bg-surface flex h-full w-[130px] items-center justify-center rounded-[10px] border py-4"
-            aria-label="Steps"
-          >
-            <StepsSlider value={steps} onChange={setSteps} />
-          </div>
+          <StepsSlider value={steps} onChange={setSteps} />
         </div>
 
-        <div className="flex items-stretch gap-6">
+        <div className="flex gap-4">
           <ColorPairPicker
             startColor={startColor}
             endColor={endColor}
             onStartChange={setStartColor}
             onEndChange={setEndColor}
           />
-
           <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
         </div>
       </main>

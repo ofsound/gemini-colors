@@ -30,17 +30,22 @@ export function StepsSlider({ value, onChange }: StepsSliderProps) {
   const sliderPosition = sliderPositionFromSteps(value);
 
   return (
-    <input
-      className="steps-slider"
-      type="range"
-      min={0}
-      max={STEPS_SLIDER_PRECISION}
-      step={1}
-      value={sliderPosition}
-      onChange={(e) =>
-        onChange(stepsFromSliderPosition(Number(e.target.value)))
-      }
+    <div
+      className="border-border bg-surface flex h-full w-[130px] items-center justify-center rounded-[10px] border py-4"
       aria-label="Steps"
-    />
+    >
+      <input
+        className="steps-slider"
+        type="range"
+        min={0}
+        max={STEPS_SLIDER_PRECISION}
+        step={1}
+        value={sliderPosition}
+        onChange={(e) =>
+          onChange(stepsFromSliderPosition(Number(e.target.value)))
+        }
+        aria-label="Steps"
+      />
+    </div>
   );
 }

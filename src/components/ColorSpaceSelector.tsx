@@ -52,7 +52,7 @@ export function ColorSpaceSelector({
   };
 
   return (
-    <div className="border-border bg-surface flex min-h-[215px] w-[130px] flex-none self-stretch rounded-[10px] border px-2 py-4">
+    <div className="border-border bg-surface flex min-h-[215px] w-[130px] flex-none self-stretch rounded-xl border px-2 py-4">
       <div
         ref={radioGroupRef}
         role="radiogroup"
@@ -87,7 +87,7 @@ export function ColorSpaceSelector({
                 ) : null}
               </span>
               <span
-                className={`w-max max-w-full rounded-full px-[0.6em] py-[0.1em] ${
+                className={`ml-1 w-max max-w-full rounded-full px-[0.6em] py-[0.1em] ${
                   isSelected
                     ? "bg-neutral-selected-bg text-foreground"
                     : "bg-neutral-bg text-neutral-fg"

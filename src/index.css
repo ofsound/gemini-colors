@@ -24,12 +24,12 @@
     theme(colors.zinc.200)
   );
   --color-neutral-bg: light-dark(
-    theme(colors.zinc.200),
+    color-mix(in srgb, theme(colors.zinc.100) 50%, theme(colors.zinc.200) 50%),
     theme(colors.zinc.700)
   );
   --color-neutral-selected-bg: light-dark(
     theme(colors.zinc.100),
-    theme(colors.zinc.500)
+    color-mix(in srgb, theme(colors.zinc.700) 50%, theme(colors.zinc.800) 50%)
   );
   --color-neutral-fg: light-dark(
     theme(colors.zinc.900),
@@ -49,15 +49,15 @@
 
   --color-button-primary-bg: light-dark(
     theme(colors.zinc.700),
-    theme(colors.zinc.400)
+    theme(colors.zinc.300)
+  );
+  --color-button-primary-bg-hover: light-dark(
+    theme(colors.zinc.900),
+    theme(colors.zinc.200)
   );
   --color-button-primary-fg: light-dark(
     theme(colors.white),
     theme(colors.zinc.800)
-  );
-  --color-button-primary-hover: light-dark(
-    theme(colors.zinc.900),
-    theme(colors.zinc.200)
   );
 }
 
