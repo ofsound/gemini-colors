@@ -46,7 +46,7 @@ function App() {
   return (
     <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-4xl p-4 antialiased">
       <div className="mb-[1.4em] flex items-center justify-end gap-3">
-        <div className="flex items-center gap-2">
+        <div className="mr-4 flex items-center gap-2">
           <button
             type="button"
             aria-label="Remove color entity"

@@ -121,13 +121,13 @@ body {
 
 .entity-exit {
   display: grid;
-  animation: entity-slide-close 0.4s cubic-bezier(0.5, 0, 0.84, 0) 0.15s both;
+  animation: entity-slide-close 0.2s linear 0.1s both;
 }
 
 .entity-exit > * {
   overflow: hidden;
   min-height: 0;
-  animation: entity-fade-out 0.2s ease both;
+  animation: entity-fade-out 0.1s ease both;
 }
 
 .swap-btn {

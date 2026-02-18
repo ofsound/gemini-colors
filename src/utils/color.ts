@@ -16,11 +16,8 @@ export function randomEntityConfig() {
   return {
     defaultStartColor: randomHex(),
     defaultEndColor: randomHex(),
-    // Steps between 2 and 50 (bias toward mid-range via two random samples)
-    defaultSteps: Math.max(
-      2,
-      Math.round(((Math.random() + Math.random()) / 2) * 48) + 2,
-    ),
+    // Steps: uniform random between 2 and 50
+    defaultSteps: Math.floor(Math.random() * 49) + 2,
     defaultColorSpace:
       COLOR_SPACES[Math.floor(Math.random() * COLOR_SPACES.length)],
   };
