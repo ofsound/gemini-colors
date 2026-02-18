@@ -11,6 +11,9 @@ interface ColorEntityProps {
   defaultEndColor?: string;
   defaultSteps?: number;
   defaultColorSpace?: ColorSpace;
+  compact?: boolean;
+  leaving?: boolean;
+  onExited?: () => void;
 }
 
 export function ColorEntity({
@@ -18,6 +21,9 @@ export function ColorEntity({
   defaultEndColor = "#ff0000",
   defaultSteps = 10,
   defaultColorSpace = "srgb",
+  compact = false,
+  leaving = false,
+  onExited,
 }: ColorEntityProps) {
   const [startColor, setStartColor] = useState(defaultStartColor);
   const [endColor, setEndColor] = useState(defaultEndColor);
@@ -36,37 +42,68 @@ export function ColorEntity({
     setSelection({ color: hex, index, key: configKey });
   }
 
+  function handleAnimationEnd(e: React.AnimationEvent) {
+    if (leaving && e.animationName === "entity-slide-close" && onExited) {
+      onExited();
+    }
+  }
+
+  const sectionClass = leaving ? "entity-exit" : "entity-enter";
+
+  if (compact) {
+    return (
+      <section className={sectionClass} onAnimationEnd={handleAnimationEnd}>
+        <div>
+          <div className="pb-10">
+            <div className="h-40">
+              <ColorDisplay
+                startColor={startColor}
+                endColor={endColor}
+                steps={steps}
+                colorSpace={colorSpace}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section>
-      <div className="mb-4 flex h-40 gap-4">
-        <ColorDisplay
-          startColor={startColor}
-          endColor={endColor}
-          steps={steps}
-          colorSpace={colorSpace}
-          onColorClick={handleColorClick}
-        />
-        <StepsSlider value={steps} onChange={setSteps} />
-      </div>
+    <section className={sectionClass} onAnimationEnd={handleAnimationEnd}>
+      <div>
+        <div className="pb-10">
+          <div className="mb-4 flex h-40 gap-4">
+            <ColorDisplay
+              startColor={startColor}
+              endColor={endColor}
+              steps={steps}
+              colorSpace={colorSpace}
+              onColorClick={handleColorClick}
+            />
+            <StepsSlider value={steps} onChange={setSteps} />
+          </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:flex-row-reverse">
-        <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
-        <ColorPairPicker
-          startColor={startColor}
-          endColor={endColor}
-          onStartChange={setStartColor}
-          onEndChange={setEndColor}
-        />
-      </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-row-reverse">
+            <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
+            <ColorPairPicker
+              startColor={startColor}
+              endColor={endColor}
+              onStartChange={setStartColor}
+              onEndChange={setEndColor}
+            />
+          </div>
 
-      <ColorOutput
-        startColor={startColor}
-        endColor={endColor}
-        steps={steps}
-        colorSpace={colorSpace}
-        selectedColor={activeSelection?.color ?? null}
-        selectedIndex={activeSelection?.index ?? null}
-      />
+          <ColorOutput
+            startColor={startColor}
+            endColor={endColor}
+            steps={steps}
+            colorSpace={colorSpace}
+            selectedColor={activeSelection?.color ?? null}
+            selectedIndex={activeSelection?.index ?? null}
+          />
+        </div>
+      </div>
     </section>
   );
 }

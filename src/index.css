@@ -70,6 +70,66 @@ body {
 }
 
 /* Beveled 3D swap button (gradient + pressed state from original .swap-btn) */
+/* Two-phase entity entrance: space opens, then content fades in */
+@keyframes entity-slide-open {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes entity-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entity-enter {
+  display: grid;
+  animation: entity-slide-open 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.entity-enter > * {
+  overflow: hidden;
+  min-height: 0;
+  animation: entity-fade-in 0.3s ease 0.25s both;
+}
+
+/* Two-phase entity exit: content fades out, then space collapses */
+@keyframes entity-slide-close {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+
+@keyframes entity-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.entity-exit {
+  display: grid;
+  animation: entity-slide-close 0.4s cubic-bezier(0.5, 0, 0.84, 0) 0.15s both;
+}
+
+.entity-exit > * {
+  overflow: hidden;
+  min-height: 0;
+  animation: entity-fade-out 0.2s ease both;
+}
+
 .swap-btn {
   --btn-top: color-mix(in oklch, var(--color-button-primary-bg) 85%, white 15%);
   --btn-bottom: color-mix(

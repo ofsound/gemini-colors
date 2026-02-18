@@ -1,4 +1,30 @@
 import type { ColorSpace } from "@/types/color";
+import { COLOR_SPACES } from "@/types/color";
+
+/** Returns a random full 6-digit hex color string. */
+function randomHex(): string {
+  return (
+    "#" +
+    Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0")
+  );
+}
+
+/** Returns a randomized set of ColorEntity default props. */
+export function randomEntityConfig() {
+  return {
+    defaultStartColor: randomHex(),
+    defaultEndColor: randomHex(),
+    // Steps between 2 and 50 (bias toward mid-range via two random samples)
+    defaultSteps: Math.max(
+      2,
+      Math.round(((Math.random() + Math.random()) / 2) * 48) + 2,
+    ),
+    defaultColorSpace:
+      COLOR_SPACES[Math.floor(Math.random() * COLOR_SPACES.length)],
+  };
+}
 
 /**
  * Resolves all interpolated color-mix() steps to their actual #rrggbb hex values
