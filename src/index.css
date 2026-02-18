@@ -16,7 +16,7 @@
   --font-heading: "Rubik";
 
   --color-background: light-dark(
-    theme(colors.zinc.50),
+    theme(colors.zinc.100),
     theme(colors.neutral.950)
   );
   --color-foreground: light-dark(

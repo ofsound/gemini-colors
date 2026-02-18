@@ -233,7 +233,7 @@ export function ChromeColorPicker({
 
   return (
     <div
-      className="w-[clamp(130px,42vw,320px)] min-w-0 flex-1 p-2 select-none"
+      className="w-[clamp(130px,42vw,320px)] min-w-0 flex-1 select-none"
       aria-label={`${label} color picker`}
     >
       <div
