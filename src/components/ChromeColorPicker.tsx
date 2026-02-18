@@ -6,7 +6,6 @@ interface ChromeColorPickerProps {
   value: string;
   onChange: (color: string) => void;
   label: string;
-  reverseTopRow?: boolean;
 }
 
 interface RGB {
@@ -148,7 +147,6 @@ export function ChromeColorPicker({
   value,
   onChange,
   label,
-  reverseTopRow = false,
 }: ChromeColorPickerProps) {
   const hsv = useMemo(() => rgbToHsv(hexToRgb(value)), [value]);
   const [dragMode, setDragMode] = useState<"xy" | null>(null);
@@ -236,73 +234,79 @@ export function ChromeColorPicker({
       className="w-[clamp(130px,42vw,320px)] min-w-0 flex-1 select-none"
       aria-label={`${label} color picker`}
     >
-      <div
-        className={`mb-3 flex items-center gap-3 ${reverseTopRow ? "flex-row-reverse" : ""}`}
-      >
+      {/* Mobile: panel top, inputs row (inputs + swatch) bottom. Desktop: inputs row top, panel bottom */}
+      <div className="flex flex-col flex-col-reverse gap-3 sm:flex-col">
         <div
-          className="h-[72px] min-w-0 flex-1 rounded-md"
-          style={{ backgroundColor: value }}
-        />
-        <div className="flex w-[92px] max-w-[92px] min-w-0 shrink-0 flex-col items-stretch gap-2">
-          <input
-            className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-mono text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
-            type="text"
-            value={hexInput}
-            aria-label={`${label} hex color`}
-            spellCheck={false}
-            onChange={(event) => {
-              setHexInput(event.target.value.toUpperCase());
-              if (hexInvalid) setHexInvalid(false);
-            }}
-            onBlur={commitHexInput}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                commitHexInput();
-              }
-            }}
+          className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center"
+        >
+          <div
+            className="flex w-full min-w-0 shrink-0 flex-col items-stretch gap-2 sm:w-[92px] sm:max-w-[92px]"
+          >
+            <input
+              className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-sans text-sm tracking-[0.04em] uppercase focus-visible:outline-2 focus-visible:outline-offset-1 ${hexInvalid ? "ring-1 ring-red-400" : ""}`}
+              type="text"
+              value={hexInput}
+              aria-label={`${label} hex color`}
+              spellCheck={false}
+              onChange={(event) => {
+                setHexInput(event.target.value.toUpperCase());
+                if (hexInvalid) setHexInvalid(false);
+              }}
+              onBlur={commitHexInput}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  commitHexInput();
+                }
+              }}
+            />
+            <input
+              className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-sans text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
+              type="text"
+              value={rgbInput}
+              aria-label={`${label} rgb color`}
+              spellCheck={false}
+              onChange={(event) => {
+                setRgbInput(event.target.value);
+                if (rgbInvalid) setRgbInvalid(false);
+              }}
+              onBlur={commitRgbInput}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  commitRgbInput();
+                }
+              }}
+            />
+          </div>
+          <div
+            className="h-[72px] min-w-0 flex-1 rounded-md"
+            style={{ backgroundColor: value }}
           />
-          <input
-            className={`border-border bg-background/50 text-foreground placeholder:text-placeholder focus-visible:outline-focus/60 box-border h-8 w-full max-w-full rounded border px-2 font-mono text-sm tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-1 ${rgbInvalid ? "ring-1 ring-red-400" : ""}`}
-            type="text"
-            value={rgbInput}
-            aria-label={`${label} rgb color`}
-            spellCheck={false}
-            onChange={(event) => {
-              setRgbInput(event.target.value);
-              if (rgbInvalid) setRgbInvalid(false);
-            }}
-            onBlur={commitRgbInput}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                commitRgbInput();
-              }
+        </div>
+        <div
+          ref={panelRef}
+          className="border-border relative h-[clamp(100px,23.125vw,150px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
+          style={{ background: SV_PANEL_BACKGROUND }}
+          onPointerDown={onXYPointerDown}
+          role="slider"
+          aria-label={`${label} hue and brightness`}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(hsv.v)}
+          aria-valuetext={`Hue: ${Math.round(hsv.h)}°, Saturation: ${Math.round(hsv.s)}%, Value: ${Math.round(hsv.v)}%`}
+        >
+          <div
+            className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+            style={{
+              left: saturationPointerX,
+              top: saturationPointerY,
             }}
           />
         </div>
       </div>
-
-      <div
-        ref={panelRef}
-        className="border-border relative h-[clamp(100px,23.125vw,150px)] cursor-crosshair touch-none overflow-hidden rounded-md border"
-        style={{ background: SV_PANEL_BACKGROUND }}
-        onPointerDown={onXYPointerDown}
-        role="slider"
-        aria-label={`${label} hue and brightness`}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(hsv.v)}
-        aria-valuetext={`Hue: ${Math.round(hsv.h)}°, Saturation: ${Math.round(hsv.s)}%, Value: ${Math.round(hsv.v)}%`}
-      >
-        <div
-          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
-          style={{
-            left: saturationPointerX,
-            top: saturationPointerY,
-          }}
-        />
-      </div>
     </div>
   );
 }
+
+

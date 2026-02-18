@@ -20,7 +20,7 @@ export function ColorPairPicker({
   }, [startColor, endColor, onStartChange, onEndChange]);
 
   return (
-    <div className="border-border bg-surface flex min-w-0 justify-between gap-4 gap-12 rounded-xl border px-4 py-4">
+    <div className="border-border bg-surface flex min-w-0 justify-between gap-[clamp(.8rem,4vw,3rem)] rounded-xl border px-4 py-4">
       <ChromeColorPicker
         value={startColor}
         onChange={onStartChange}
@@ -53,7 +53,6 @@ export function ColorPairPicker({
         value={endColor}
         onChange={onEndChange}
         label="End"
-        reverseTopRow
       />
     </div>
   );

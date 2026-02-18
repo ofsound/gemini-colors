@@ -52,12 +52,12 @@ export function ColorSpaceSelector({
   };
 
   return (
-    <div className="border-border bg-surface flex min-h-[215px] w-[130px] flex-none self-stretch rounded-xl border px-2 py-4">
+    <div className="border-border bg-surface flex min-h-0 w-full self-stretch rounded-xl border px-2 py-4 sm:min-h-[215px] sm:w-[130px] sm:flex-none">
       <div
         ref={radioGroupRef}
         role="radiogroup"
         aria-label="Color space"
-        className="flex h-full w-full flex-col justify-between"
+        className="flex h-full w-full flex-row flex-wrap justify-start gap-2 sm:flex-col sm:justify-between sm:gap-0"
         onKeyDown={handleKeyDown}
       >
         {COLOR_SPACES.map((space, index) => {
@@ -76,7 +76,7 @@ export function ColorSpaceSelector({
                 }
               }}
               data-index={index}
-              className="focus-visible:outline-focus/60 flex w-full cursor-pointer items-center justify-start gap-2 px-1 py-0.5 text-sm font-bold tracking-[0.05em] uppercase outline-none focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="focus-visible:outline-focus/60 flex shrink-0 cursor-pointer items-center justify-start gap-2 px-1 py-0.5 text-sm font-bold tracking-[0.05em] uppercase outline-none focus-visible:outline-2 focus-visible:outline-offset-2 sm:w-full"
             >
               <span
                 className="border-border bg-background flex size-4 shrink-0 items-center justify-center rounded-full border-2"

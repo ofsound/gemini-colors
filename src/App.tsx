@@ -14,7 +14,7 @@ function App() {
   const [colorSpace, setColorSpace] = useState<ColorSpace>("srgb");
 
   return (
-    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-4xl p-4 text-center font-sans text-sm antialiased">
+    <div className="bg-background text-foreground mx-auto min-h-screen w-full max-w-4xl p-4 antialiased">
       <div className="mb-4 flex items-center justify-end">
         <button
           type="button"
@@ -29,7 +29,7 @@ function App() {
         </button>
       </div>
 
-      <h1 className="font-heading mb-9 text-6xl leading-[1.15] font-semibold">
+      <h1 className="font-heading mb-9 text-center font-semibold leading-[1.15] text-[clamp(1.5rem,0.75rem+3.75vw,3.75rem)]">
         Color Space Interpolation
       </h1>
 
@@ -44,14 +44,14 @@ function App() {
           <StepsSlider value={steps} onChange={setSteps} />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-row-reverse">
+          <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
           <ColorPairPicker
             startColor={startColor}
             endColor={endColor}
             onStartChange={setStartColor}
             onEndChange={setEndColor}
           />
-          <ColorSpaceSelector value={colorSpace} onChange={setColorSpace} />
         </div>
       </main>
     </div>

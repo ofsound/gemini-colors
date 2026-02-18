@@ -12,7 +12,6 @@
 
 @theme inline {
   --font-sans: "Ubuntu";
-  --font-mono: "Noto Sans";
   --font-heading: "Rubik";
 
   --color-background: light-dark(
